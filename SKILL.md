@@ -17,7 +17,7 @@ description: >
 # Spec Smith
 
 Turn ephemeral plans into structured, persistent specs built through deep
-research. Specs have phases, tasks, resume context,
+research and iterative interviews. Specs have phases, tasks, resume context,
 and a decision log. They live in `.specs/` at the project root and work
 with any AI coding tool that can read markdown.
 
@@ -203,9 +203,32 @@ See `references/spec-format.md` for the full SPEC.md template.
 ## Forging Specs
 
 When asked to plan, spec out, or forge work, follow the full forge workflow:
-research deeply, then write the spec.
+setup, research deeply, interview the user, iterate until clear, then write
+the spec.
 
-### Step 1: Deep Research
+### Step 1: Setup
+
+1. Generate a spec ID from the title (lowercase, hyphenated):
+   `"User Auth System"` -> `user-auth-system`
+2. **Collision check**: If `.specs/<id>/SPEC.md` already exists or the ID
+   appears in `.specs/registry.md`, warn the user and ask:
+   - **Resume** the existing spec
+   - **Rename** the new spec (suggest `<id>-v2` or ask for a new title)
+   - **Archive** the old spec and create a new one in its place
+   Do not proceed until the user chooses.
+3. Initialize directories:
+   ```bash
+   mkdir -p .specs/<id>
+   ```
+4. If `.specs/registry.md` doesn't exist, initialize it:
+   ```markdown
+   # Spec Registry
+
+   | ID | Title | Status | Priority | Progress | Updated |
+   |----|-------|--------|----------|----------|---------|
+   ```
+
+### Step 2: Deep Research
 
 Scan the project and gather context before asking anything:
 
@@ -222,25 +245,44 @@ Scan the project and gather context before asking anything:
 Save findings to `.specs/<id>/research-01.md` with sections for
 architecture, relevant code, tech stack, external research, and open questions.
 
-### Step 2: Setup
+### Step 3: Interview Round 1
 
-1. Generate a spec ID from the title (lowercase, hyphenated):
-   `"User Auth System"` -> `user-auth-system`
-2. Initialize directories:
-   ```bash
-   mkdir -p .specs/<id>
-   ```
-3. If `.specs/registry.md` doesn't exist, initialize it:
-   ```markdown
-   # Spec Registry
+Present your research findings and ask targeted questions. Your research
+should inform specific questions, not generic ones.
 
-   | ID | Title | Status | Priority | Progress | Updated |
-   |----|-------|--------|----------|----------|---------|
-   ```
+1. **Summarize findings** (2-3 paragraphs — not a wall of text)
+2. **State assumptions** — "Based on the codebase, I'm assuming we'll use X
+   pattern because that's what similar features use. Correct?"
+3. **Ask 3-6 targeted questions** that research couldn't answer:
+   - Architecture decisions ("New module or extend existing one?")
+   - Scope boundaries ("Should this handle X edge case?")
+   - Technical choices ("Stick with Library A or try Library B?")
+   - User-facing behavior ("What should happen when X fails?")
+4. **Propose a rough approach** and ask for reactions
 
-### Step 3: Write the Spec
+Save to `.specs/<id>/interview-01.md` with: questions asked, user answers,
+key decisions, and any new research needed.
 
-Synthesize all research notes and decisions into a
+### Step 4: Deeper Research + Interview Loop
+
+Based on the user's answers, do another round of research — explore the
+specific paths they chose, check feasibility, find potential issues. Save
+to `.specs/<id>/research-02.md`.
+
+Then present deeper findings and ask about trade-offs, edge cases,
+implementation sequence, and scope refinement. Save each interview round
+to `interview-02.md`, `interview-03.md`, etc.
+
+**Repeat research-then-interview until:**
+- You have enough clarity to write a spec with no ambiguous tasks
+- The user is satisfied with the direction
+- Every task can be described concretely (not "figure out X")
+
+Two rounds is typical. Don't rush it — but don't drag it out either.
+
+### Step 5: Write the Spec
+
+Synthesize all research notes, interview answers, and decisions into a
 SPEC.md. See `references/spec-format.md` for the full template. Include:
 
 - YAML frontmatter (id, title, status, created, updated, priority, tags)
@@ -249,7 +291,7 @@ SPEC.md. See `references/spec-format.md` for the full template. Include:
 - Phases with status markers (3-6 phases is typical)
 - Tasks as markdown checkboxes with task codes (`[PREFIX-NN]`)
 - Resume Context section (blockquote)
-- Decision Log with non-obvious technical choices
+- Decision Log with non-obvious technical choices from the interviews
 - Deviations table (empty — filled during implementation)
 
 **Quality check before presenting:**

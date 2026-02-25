@@ -194,11 +194,18 @@ It's fine if this takes 2 rounds or 5 rounds. Don't rush it.
 Before writing the spec, ensure the directory structure exists:
 
 1. Generate a spec ID from the user's request (lowercase, hyphenated)
-2. Create the research directory:
+2. **Collision check**: Before creating anything, check if
+   `.specs/<spec-id>/SPEC.md` already exists or the ID appears in
+   `.specs/registry.md`. If either is true, warn the user and ask:
+   - **Resume** the existing spec (switch to resume workflow)
+   - **Rename** the new spec (suggest `<spec-id>-v2` or ask for a new title)
+   - **Archive** the old spec and create a new one in its place
+   Do not proceed until the user chooses.
+3. Create the spec directory:
    ```
    mkdir -p .specs/<spec-id>
    ```
-3. If `.specs/` doesn't exist yet, also create `registry.md`
+4. If `.specs/` doesn't exist yet, also create `registry.md`
 
 If you were in plan mode during earlier phases, confirm the user has exited
 plan mode before proceeding. If directory creation fails (still read-only),
