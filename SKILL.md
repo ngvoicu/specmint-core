@@ -1,17 +1,15 @@
 ---
 name: specsmith
 description: >
-  Structured spec management for AI coding workflows. Converts ephemeral
-  plans into persistent, resumable specs with phases, tasks, and progress
-  tracking that survive across sessions. Use this skill whenever the user:
-  exits plan mode (automatically offer to save the plan as a spec), says
-  "resume" or "what was I working on", wants to switch between projects,
-  mentions specs/phases/tasks, says "spec new/list/resume/status/pause/activate",
-  says "forge", "research", "create a spec for X", "plan X",
-  says "generate openapi", "update api spec", "create api docs", "openapi",
-  or any workflow involving structured planning that should persist. Also
-  trigger when the user starts a new session in a project that has a `.specs/`
-  directory — check for an active spec and offer to resume.
+  Persistent spec management for AI coding workflows. Use this skill when the
+  user explicitly mentions specs, forging, or structured planning: says "forge",
+  "forge a spec", "write a spec for X", "create a spec", "plan X as a spec",
+  "resume", "what was I working on", "spec list/status/pause/switch/activate",
+  "implement the spec", "implement phase N", "implement all phases",
+  "generate openapi", or exits plan mode (offer to save as a spec). Also
+  trigger when a `.specs/` directory exists at session start. Do NOT trigger
+  on general feature requests, coding tasks, or questions that don't mention
+  specs or forging — those are normal coding tasks, not spec management.
 ---
 
 # Spec Smith
@@ -126,6 +124,7 @@ Also:
 
 When the user says "pause", switches specs, or a session is ending:
 
+0. If there is no active spec, report that there is nothing to pause and stop.
 1. Capture what was happening:
    - Which task was in progress
    - What files were being modified (paths, function names)
@@ -147,15 +146,17 @@ hooked up to the `/auth/refresh` endpoint yet."
 
 ### Switching Between Specs
 
-1. Pause the current spec (full pause workflow)
-2. Load the target spec
-3. Set target status to `active` in its frontmatter and in `.specs/registry.md`
-4. Resume the target spec (full resume workflow)
+1. Validate the target spec ID first. If missing, list available specs.
+2. Confirm `.specs/<target-id>/SPEC.md` exists. If not, stop with an error.
+3. If target is already active, report and stop.
+4. Pause the current active spec if one exists (full pause workflow).
+5. Set target status to `active` in frontmatter and in `.specs/registry.md`.
+6. Resume the target spec (full resume workflow).
 
 ## Command Ownership Map
 
 - `SKILL.md`: global invariants, lifecycle rules, state authority, and conflict
-  handling.
+  handling, plus cross-tool OpenAPI behavior.
 - `commands/*.md`: command-specific entrypoints, prompts, and output shapes.
 - If there is a conflict, preserve `Critical Invariants` from this file and
   apply command-specific behavior only where it does not violate invariants.
@@ -202,9 +203,18 @@ See `references/spec-format.md` for the full SPEC.md template.
 
 ## Forging Specs
 
-When asked to plan, spec out, or forge work, follow the full forge workflow:
-setup, research deeply, interview the user, iterate until clear, then write
-the spec.
+When asked to forge, plan, spec out, or "write a spec for X", follow the
+full forge workflow: setup, research deeply, interview the user, iterate
+until clear, then write the spec.
+
+If the environment is in read-only plan mode, do not run forge in that mode.
+Ask the user to exit plan mode (Shift+Tab) and rerun `/specsmith:forge`.
+
+**The forge workflow never produces application code.** Its outputs are only
+`.specs/` files: research notes, interview notes, and the SPEC.md. If the
+user says "write a spec", that means write a SPEC.md — not implement the
+feature. Implementation happens separately, after the user reviews and
+approves the spec.
 
 ### Step 1: Setup
 
@@ -230,20 +240,61 @@ the spec.
 
 ### Step 2: Deep Research
 
-Scan the project and gather context before asking anything:
+Research is the foundation of a good spec. Be exhaustive — use every available
+resource. The goal is to gather enough context that the spec won't need revision
+mid-build.
 
-- **Project structure**: Map directories, patterns, tech stack (read
-  package.json / Cargo.toml / go.mod / requirements.txt etc.)
-- **Related code**: Find every file, function, component, route, model, and
-  test that touches the area being changed. Read actual file contents.
-- **Patterns**: How does the codebase handle similar things? What conventions
-  exist for the area being modified?
-- **Dependencies**: Relevant libraries, version constraints, build/CI config
-- **Web research**: If the task involves unfamiliar tech or benefits from
-  current docs, search for best practices, API changes, known pitfalls
+Research runs on two parallel tracks to maximize thoroughness and speed:
 
-Save findings to `.specs/<id>/research-01.md` with sections for
-architecture, relevant code, tech stack, external research, and open questions.
+#### Track A: Spawn the Researcher Agent
+
+**Always spawn the `specsmith:researcher` agent** for codebase + internet
+research. Don't skip this — the researcher is purpose-built for exhaustive
+multi-source analysis and runs in parallel so it doesn't slow down the
+workflow.
+
+Spawn it with the Task tool, providing:
+- The user's request (what they want to build/change)
+- The spec ID and output path: `.specs/<id>/research-01.md`
+- Any Context7 findings you've already gathered (Track B)
+- Specific areas to focus on, if known
+
+The researcher will:
+- Map the full project architecture (read manifests, lock files, directory tree)
+- Read 15-30 relevant code files and trace dependency chains
+- Run 3+ web searches for best practices and current patterns
+- Compare 2-4 library candidates for every choice point
+- Assess security risks and performance implications
+- Produce a structured research document with a completeness checklist
+
+#### Track B: Context7 & Cross-Skill Research (in parallel)
+
+While the researcher runs, do these yourself — they use MCP tools that
+the researcher agent doesn't have access to:
+
+- **Context7**: If available (resolve-library-id / query-docs tools), pull
+  up-to-date documentation for every key library involved. Check API changes,
+  deprecated features, and recommended patterns for the specific versions in
+  use. Do this for 2-5 key libraries — the ones central to the feature being
+  built.
+- **Cross-skill loading**: Load other available skills when relevant:
+  - **frontend-design**: For UI-heavy specs — creative, professional design
+  - **datasmith-pg**: For database specs — schema design, migrations, indexing
+  - **webapp-testing**: For testing strategy — Playwright patterns
+  - **vercel-react-best-practices**: For Next.js/React performance
+  - Any other relevant skill that's available
+- **UI research** (if applicable): Take screenshots, map component hierarchy,
+  research modern UI patterns, note accessibility requirements
+
+#### Merging Research
+
+When the researcher agent completes, read its output at
+`.specs/<id>/research-01.md`. Merge your Context7 and cross-skill findings
+into the research notes — either append to the file or keep them in mind
+for the interview. The combined research should cover:
+architecture, relevant code, tech stack, library comparisons, internet
+research, Context7 docs, UI research (if applicable), risk assessment,
+and open questions.
 
 ### Step 3: Interview Round 1
 
@@ -259,6 +310,12 @@ should inform specific questions, not generic ones.
    - Technical choices ("Stick with Library A or try Library B?")
    - User-facing behavior ("What should happen when X fails?")
 4. **Propose a rough approach** and ask for reactions
+
+**STOP after presenting questions.** Wait for the user to answer before
+proceeding. Do not answer your own questions, do not assume answers, and do
+not continue to Step 4 or Step 5 until the user has responded. The interview
+is a conversation — the user's answers shape the spec. If you skip this, the
+spec will be based on guesses instead of decisions.
 
 Save to `.specs/<id>/interview-01.md` with: questions asked, user answers,
 key decisions, and any new research needed.
@@ -283,29 +340,152 @@ Two rounds is typical. Don't rush it — but don't drag it out either.
 ### Step 5: Write the Spec
 
 Synthesize all research notes, interview answers, and decisions into a
-SPEC.md. See `references/spec-format.md` for the full template. Include:
+comprehensive SPEC.md. See `references/spec-format.md` for the full template.
+
+The spec should be thorough and detailed — someone reading it should be able
+to implement the feature without guessing. Include:
 
 - YAML frontmatter (id, title, status, created, updated, priority, tags)
-- Overview (2-4 sentences — someone reading just this should understand
-  what's being built and why)
+- Overview (2-4 sentences — what's being built and why)
+- **Architecture Diagram** — ASCII art or Mermaid diagram showing the system
+  architecture, data flow, or component relationships. Every non-trivial spec
+  should have at least one diagram. Use ASCII for simple flows, Mermaid for
+  complex relationships.
+- **Library Choices** — Table comparing evaluated libraries with the selected
+  pick and rationale. Include version numbers.
 - Phases with status markers (3-6 phases is typical)
-- Tasks as markdown checkboxes with task codes (`[PREFIX-NN]`)
+- Tasks as markdown checkboxes with task codes (`[PREFIX-NN]`) — be specific:
+  include file paths, function names, and expected behavior
+- **Testing Strategy** — Comprehensive testing plan: unit tests, integration
+  tests, e2e tests, edge case tests. Specify which testing frameworks to use
+  and what test files to create. Every feature task should have a corresponding
+  test task.
 - Resume Context section (blockquote)
 - Decision Log with non-obvious technical choices from the interviews
 - Deviations table (empty — filled during implementation)
 
-**Quality check before presenting:**
-- Every task should be concrete ("Add verifyToken() to src/auth/tokens.ts"),
-  not vague ("implement token verification")
-- Phases should have clear boundaries and dependencies
-- Each task should be completable in roughly one focused session
+**Diagram guidelines:**
+- Use ASCII art for simple request flows and data pipelines:
+  ```
+  Client → API Gateway → Auth Middleware → Route Handler → Database
+                                              ↓
+                                         Cache Layer
+  ```
+- Use Mermaid for complex architecture, state machines, and ER diagrams:
+  ```mermaid
+  graph TD
+    A[Client] --> B[API Gateway]
+    B --> C{Auth?}
+    C -->|Yes| D[Handler]
+    C -->|No| E[401]
+  ```
+- Include at least one diagram per spec (architecture, data flow, or state)
+
+**Solution quality standards:**
+- Proposed solutions should be simple, maintainable, and professional
+- Prefer clean, modern patterns over clever hacks
+- Choose the best available libraries — compare options, pick the most mature
+  and well-maintained
+- UI designs should be creative, sleek, and professional — not generic
+- Code architecture should be innovative where appropriate but always clean
+
+**Coherence and logic review (mandatory before presenting):**
+1. Read through the entire spec as a whole — does it tell a coherent story?
+2. Check that phases are in logical dependency order — no phase requires
+   work from a later phase
+3. Verify every task is concrete and actionable (file paths, function names)
+4. Confirm the architecture diagram matches the task descriptions
+5. Check that the testing strategy covers all feature tasks
+6. Verify library choices are consistent throughout (no conflicting picks)
+7. Ensure the overview accurately summarizes what the phases will deliver
+8. Look for gaps — is there anything the implementation would need that
+   isn't covered by a task?
 
 Save to `.specs/<id>/SPEC.md`. Update `.specs/registry.md` — set
-status to `active`. Present the spec for review and adjust based on feedback.
+status to `active`.
+
+**Present the spec and wait for approval.** Show the user the complete spec
+and ask: "Does this look right? Want to adjust anything before we start?"
+Do not begin implementing until the user explicitly approves. The forge
+workflow produces only spec files (SPEC.md, research-*.md, interview-*.md) —
+never application code. Implementation starts only after the user approves
+the spec and says to proceed.
 
 **Phase/task guidelines:**
 - Mark Phase 1 as `[in-progress]`, the rest as `[pending]`
 - Mark the first unchecked task with `← current`
+
+## Implementing a Spec
+
+When the user says "implement the spec", "implement phase N", "implement all
+phases", or similar:
+
+### Scope Detection
+
+Parse the user's request to determine scope:
+- **"implement the spec"** or **"implement"** → Start from the current task
+  (the `← current` marker) and work forward
+- **"implement phase N"** or **"implement phase <name>"** → Implement all
+  tasks in that specific phase
+- **"implement all phases"** or **"implement everything"** → Implement all
+  remaining unchecked tasks across all phases, in order
+
+### Implementation Flow
+
+1. Read `.specs/registry.md` to find the active spec
+2. Load `.specs/<id>/SPEC.md` and parse phases/tasks
+3. Identify the target tasks based on scope
+4. For each task, in order:
+   a. Mark it with `← current`
+   b. Implement it — write the actual code
+   c. Check it off: `- [ ]` → `- [x]`
+   d. Remove the `← current` marker
+   e. When all tasks in a phase complete:
+      - Phase status: `[in-progress]` → `[completed]`
+      - Next phase: `[pending]` → `[in-progress]`
+   f. Update `updated` date in frontmatter
+   g. Update progress and date in `.specs/registry.md`
+5. After each task completion, update Resume Context with current state
+6. Log any new decisions to the Decision Log
+7. If implementation diverges from the spec, log it in the Deviations section
+8. If blocked on a task:
+   - Keep the task unchecked and record blocker details in Resume Context
+   - Set phase marker `[blocked]` only when the whole phase is blocked
+   - Continue with another unblocked task only if sequencing allows it
+
+### Testing During Implementation
+
+When implementing, follow the testing strategy from the spec:
+- Write tests as specified in the testing tasks
+- Run tests after each task to verify correctness
+- If a test task exists for the feature task you just completed, implement
+  the test task immediately after
+
+### Completion
+
+When all tasks are done:
+- Set all phases to `[completed]`
+- Set spec status to `completed` in frontmatter and registry
+- Update the `updated` date
+- Present a summary of what was implemented
+- Suggest next spec to activate if any are paused
+
+## Generating OpenAPI Docs
+
+When the user says "generate openapi", "update api docs", or similar:
+
+1. Scan the codebase for API routes/handlers/controllers and request/response
+   schemas.
+2. Infer auth/security schemes and endpoint grouping (tags).
+3. Write `.openapi/openapi.yaml` (OpenAPI 3.1.1) with:
+   - `operationId` for every operation
+   - Reusable `components/schemas` and `$ref` usage
+   - Accurate parameters, request bodies, responses, and security
+4. Write one endpoint doc per route under `.openapi/endpoints/` using
+   `{method}-{path-slug}.md` names (e.g., `get-api-users-id.md`).
+5. Preserve manual additions in existing `.openapi/` files when updating.
+6. Report totals: endpoints, schemas, security schemes, and manual-review
+   candidates.
 
 ## Before Session Ends
 

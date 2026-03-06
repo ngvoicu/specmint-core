@@ -1,25 +1,44 @@
 ---
-description: Research deeply, interview the user, then forge a structured spec with phases and tasks. This is your enhanced plan mode.
+description: Research deeply, interview the user, then forge a structured spec with phases and tasks. This is a persistent planning workflow.
 disable-model-invocation: true
 ---
 
 # Forge a Spec
 
-You are about to run the Spec Smith forge workflow. This replaces plan mode
+You are about to run the Spec Smith forge workflow. This bypasses plan mode
 with something far more thorough: deep research → interview → more research
-→ more interview → write spec → implement.
+→ more interview → write spec → review.
+
+The forge workflow never produces application code. Its only outputs are
+`.specs/` files: research notes, interview notes, and the SPEC.md.
 
 The user's request: $ARGUMENTS
 
+## Preflight: Resolve Spec Identity
+
+Before starting research, resolve spec identity:
+
+1. Generate a spec ID from the user's request (lowercase, hyphenated)
+2. Collision-check read-only:
+   - Check `.specs/<spec-id>/SPEC.md`
+   - Check whether `<spec-id>` exists in `.specs/registry.md`
+3. If the ID already exists, stop and ask the user to choose one:
+   - **Resume** existing spec
+   - **Rename** new spec (suggest `<spec-id>-v2`)
+   - **Archive** old spec then recreate
+4. Use this resolved `<spec-id>` in all later phases.
+
 ## Plan Mode Check
 
-Before starting, check if you're in plan mode (read-only). If so:
-- Skip the Setup phase (directory creation) — we'll do it later
-- Proceed directly to Phase 1 (research) and Phase 2+ (interviews)
-- When reaching Phase 5 (write spec), ask the user to exit plan mode
-  first, then do Setup + write spec
+Before starting, check if you're in plan mode (read-only).
 
-If NOT in plan mode, proceed normally with Setup first.
+- If in plan mode:
+  - Do not run `/specsmith:forge` in plan mode
+  - Ask the user to exit plan mode (Shift+Tab), then rerun `/specsmith:forge`
+  - Stop here until plan mode is exited
+- If NOT in plan mode:
+  - Create/initialize `.specs/<spec-id>/` before the first write
+  - Persist artifacts as each phase completes
 
 ## Phase 1: Deep Research
 
@@ -48,25 +67,29 @@ architecture:
   constraints?
 
 Use Glob, Grep, and Read aggressively. Read actual file contents, not just
-file names. Open 10-20 files if needed. If Context7 is available
-(resolve-library-id / get-library-docs tools), use it to pull documentation
-for key libraries.
+file names. Open 10-20 files if needed.
 
-For large or unfamiliar codebases, spawn the `specsmith:researcher` agent
-(Task tool) to run an exhaustive parallel research pass. It will save
-structured findings to `.specs/<id>/research-01.md`.
+**Always spawn the `specsmith:researcher` agent** (Task tool) to run an
+exhaustive parallel research pass. The researcher reads 15-30 files, runs
+3+ web searches, compares library candidates, and assesses risks. Save
+structured findings to `.specs/<id>/research-01.md`. Don't skip this —
+thorough research is the foundation of a spec that won't need revision
+mid-build.
 
-### 1b. Web Research
+### 1b. Context7 & Cross-Skill Research (in parallel with researcher)
 
-If the task involves technologies, patterns, or approaches that benefit from
-current documentation:
+While the researcher agent runs, do these yourself — they use MCP tools
+that the researcher agent doesn't have access to:
 
-- Search for best practices, recent API changes, known pitfalls
-- Look up library documentation for the specific version in use
-- Find examples of similar implementations
-- Check for security advisories if relevant
-
-Use WebSearch and WebFetch. Don't be shy about multiple searches.
+- **Context7**: If available (resolve-library-id / query-docs tools), pull
+  up-to-date documentation for 2-5 key libraries involved. Check API changes,
+  deprecated features, and recommended patterns for the specific versions.
+- **Cross-skill loading**: Load other available skills when relevant:
+  - **frontend-design**: For UI-heavy features — creative, professional design
+  - **datasmith-pg**: For database work — schema design, migrations, indexing
+  - **webapp-testing**: For testing strategy — Playwright patterns
+  - **vercel-react-best-practices**: For Next.js/React optimization
+  - Any other relevant skill that's available
 
 ### 1c. UI Research (if applicable)
 
@@ -75,10 +98,15 @@ If the project has a UI and the changes affect it:
 - Take screenshots of current state if browser tools are available
 - Map the component hierarchy
 - Understand the routing and state management
+- Research modern UI patterns for the specific use case
+- Look at design references for creative, professional approaches
+- Note accessibility requirements (WCAG compliance)
 
-### 1d. Save Research
+### 1d. Merge & Save Research
 
-Write everything you found to:
+When the researcher agent completes, read its output. Merge your Context7
+and cross-skill findings into the research notes. Write the combined
+findings to:
 ```
 .specs/<spec-id>/research-01.md
 ```
@@ -98,11 +126,17 @@ Structure it clearly:
 ## Tech Stack & Dependencies
 <what's in use, versions>
 
-## External Research
-<web findings, library docs, best practices>
+## Library Comparison
+<comparison tables for any libraries evaluated, with recommended picks>
 
-## UI State (if applicable)
-<screenshots, component map>
+## External Research
+<web findings, library docs, best practices, Context7 findings>
+
+## UI Research (if applicable)
+<screenshots, component map, design references, accessibility notes>
+
+## Risk Assessment
+<what could go wrong, security considerations, performance implications>
 
 ## Open Questions
 <things you couldn't determine from research alone>
@@ -130,6 +164,11 @@ generic questions — your research should inform very specific questions.
    user to design everything
 
 Keep it to 3-6 questions max per round. More than that overwhelms.
+
+**STOP after asking your questions and wait for the user to answer.** Do not
+answer your own questions, guess answers, or proceed to deeper research or
+spec writing until the user responds. The interview is a real conversation —
+the user's answers determine what gets built.
 
 **Save the interview:**
 ```
@@ -193,23 +232,15 @@ It's fine if this takes 2 rounds or 5 rounds. Don't rush it.
 
 Before writing the spec, ensure the directory structure exists:
 
-1. Generate a spec ID from the user's request (lowercase, hyphenated)
-2. **Collision check**: Before creating anything, check if
-   `.specs/<spec-id>/SPEC.md` already exists or the ID appears in
-   `.specs/registry.md`. If either is true, warn the user and ask:
-   - **Resume** the existing spec (switch to resume workflow)
-   - **Rename** the new spec (suggest `<spec-id>-v2` or ask for a new title)
-   - **Archive** the old spec and create a new one in its place
-   Do not proceed until the user chooses.
-3. Create the spec directory:
+1. Reuse the already-resolved `<spec-id>` from Preflight.
+2. Create the spec directory:
    ```
    mkdir -p .specs/<spec-id>
    ```
-4. If `.specs/` doesn't exist yet, also create `registry.md`
+3. If `.specs/` doesn't exist yet, also create `registry.md`
 
-If you were in plan mode during earlier phases, confirm the user has exited
-plan mode before proceeding. If directory creation fails (still read-only),
-ask the user to exit plan mode (Shift+Tab) and wait for confirmation.
+If directory creation fails because the environment is still read-only, ask
+the user to exit plan mode (Shift+Tab) and rerun `/specsmith:forge`.
 
 ## Phase 5: Write the Spec
 
@@ -223,14 +254,42 @@ spec should include:
    priority, tags
 2. **Overview**: 2-4 sentences capturing the goal and scope. Someone reading
    just this section should understand what's being built and why.
-3. **Phases**: Major milestones (3-6 typical). Each phase should represent a
+3. **Architecture Diagram**: ASCII art or Mermaid diagram showing the system
+   architecture, data flow, or component relationships. Every non-trivial spec
+   should have at least one diagram. Use ASCII for simple flows, Mermaid for
+   complex relationships (ER diagrams, state machines, flowcharts).
+4. **Library Choices**: Table comparing evaluated libraries with the selected
+   pick and rationale. Include version numbers. Format:
+   `| Need | Library | Version | Alternatives | Rationale |`
+5. **Phases**: Major milestones (3-6 typical). Each phase should represent a
    coherent chunk of work that's independently testable or demoable.
-4. **Tasks**: Concrete, actionable checkboxes within each phase. Each task
+6. **Tasks**: Concrete, actionable checkboxes within each phase. Each task
    should be completable in one focused session. Include specific file paths
-   and function names where known.
-5. **Resume Context**: Write the initial context as if briefing someone who
+   and function names where known. Proposed solutions should be simple,
+   maintainable, and professional — clean code, modern patterns, innovative
+   where appropriate.
+7. **Testing Strategy**: Comprehensive testing plan covering unit tests,
+   integration tests, e2e tests, and edge case tests. Specify frameworks,
+   test file paths, and what each test covers. Every feature task should have
+   a corresponding test task.
+8. **Resume Context**: Write the initial context as if briefing someone who
    will start implementing tomorrow.
-6. **Decision Log**: Every decision from the interviews, with rationale.
+9. **Decision Log**: Every decision from the interviews, with rationale.
+
+**Coherence and logic review (mandatory before presenting):**
+
+Before presenting the spec to the user, review it for coherence and logic:
+
+1. Read through the entire spec as a whole — does it tell a coherent story?
+2. Check that phases are in logical dependency order — no phase requires
+   work from a later phase
+3. Verify every task is concrete and actionable (file paths, function names)
+4. Confirm the architecture diagram matches the task descriptions
+5. Check that the testing strategy covers all feature tasks
+6. Verify library choices are consistent throughout (no conflicting picks)
+7. Ensure the overview accurately summarizes what the phases will deliver
+8. Look for gaps — is there anything the implementation would need that
+   isn't covered by a task?
 
 **Quality check before presenting:**
 
@@ -239,6 +298,9 @@ spec should include:
 - Phases should have clear boundaries and dependencies
 - The Decision Log should capture every non-obvious choice
 - The Overview should be understandable without reading the interviews
+- Architecture diagrams should be clear and accurate
+- UI designs should be creative, sleek, and professional — not generic
+- Library choices should be the best available, modern, well-maintained
 
 Save to:
 ```
@@ -247,30 +309,11 @@ Save to:
 
 Update `.specs/registry.md` (set status to `active`).
 
-**Present the spec to the user for review.** Walk through the phases and
-ask if the structure, sequencing, and task granularity look right. Adjust
-based on feedback.
+**Present the spec to the user and wait for approval.** Walk through the
+phases and ask: "Does this look right? Want to adjust anything before we
+start?" Do not begin implementing until the user explicitly says to proceed.
+The spec review is a gate — the user may want to add tasks, reorder phases,
+change scope, or rename things. Respect this pause.
 
-## Phase 6: Implement
-
-Once the user approves the spec:
-
-1. Mark Phase 1 as `[in-progress]`
-2. Mark the first task with `← current`
-3. Begin implementing
-
-**After completing each task, immediately edit the SPEC.md file** — don't
-defer updates to the end of the session:
-- Check off the task: `- [ ]` -> `- [x]`
-- Move `← current` to the next unchecked task
-- When all tasks in a phase are done: `[in-progress]` -> `[completed]`, next phase `[pending]` -> `[in-progress]`
-- Update the `updated` date in frontmatter
-- Update progress (`X/Y`) and `updated` date in `.specs/registry.md`
-- Update Resume Context periodically
-- Log any new decisions in the Decision Log
-- If implementation diverges from the spec, log it in the **Deviations** section
-- If a task reveals unexpected complexity, split it and update the spec
-
-If the session is ending before the spec is complete, run the pause workflow
-(save detailed resume context with file paths, function names, exact next
-step).
+After user approval, implementation is handled by `/specsmith:implement`.
+Do not implement application code inside `/specsmith:forge`.

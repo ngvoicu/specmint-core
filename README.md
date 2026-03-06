@@ -23,7 +23,7 @@ Spec Smith fixes all of this.
 
 Run `/specsmith:forge "add user authentication with OAuth"` and Spec Smith takes over:
 
-**1. Deep Research** — Exhaustive codebase scan (reads 10-20+ actual files, not just file names), web search for best practices, Context7 library docs, UI inspection if applicable. Everything saved to `.specs/<id>/research-01.md`.
+**1. Deep Research** — Exhaustive codebase scan (reads 10-20+ actual files, not just file names), web search for best practices, Context7 library docs, library comparisons, cross-skill research (frontend-design, datasmith-pg, etc.), UI inspection if applicable. Everything saved to `.specs/<id>/research-01.md`.
 
 **2. Interview** — Presents findings, states assumptions, asks targeted questions informed by the research. Not generic questions — specific ones like "I see you're using Express middleware pattern X in `src/middleware/`. Should the auth middleware follow the same pattern?" Saves answers to `interview-01.md`.
 
@@ -31,9 +31,9 @@ Run `/specsmith:forge "add user authentication with OAuth"` and Spec Smith takes
 
 **4. More Interviews** — As many rounds as needed until every task in the spec can be described concretely. No ambiguous "figure out X" tasks.
 
-**5. Write Spec** — Synthesizes all research and interviews into a structured SPEC.md with phases, tasks, a decision log, and resume context.
+**5. Write Spec** — Synthesizes all research and interviews into a comprehensive SPEC.md with architecture diagrams (ASCII/Mermaid), library comparison tables, phases, tasks, testing strategy, a decision log, and resume context. Runs a coherence and logic review before presenting.
 
-**6. Implement** — Works through the spec task by task, checking them off, updating progress, logging new decisions.
+**6. Implement** — Works through the spec task by task (via `/implement`), checking them off, updating progress, logging new decisions, writing tests as specified in the testing strategy.
 
 ### Specs Are Files
 
@@ -120,7 +120,7 @@ Two ways to use Spec Smith, depending on your setup.
 
 ### Path 1: Claude Code Plugin (Full — Recommended)
 
-Everything: all 7 slash commands (`/forge`, `/resume`, `/pause`, `/switch`, `/list`, `/status`, `/openapi`), researcher agent (Opus-powered deep codebase analysis), and SKILL.md auto-triggers.
+Everything: all 8 slash commands (`/forge`, `/implement`, `/resume`, `/pause`, `/switch`, `/list`, `/status`, `/openapi`), researcher agent (Opus-powered deep codebase analysis), and SKILL.md auto-triggers.
 
 ```bash
 # In Claude Code, run:
@@ -171,6 +171,7 @@ For other tools, this installs the SKILL.md which teaches the tool the full spec
 | Feature | Plugin (full) | npx (any tool) |
 |---------|:---:|:---:|
 | `/forge` research-interview workflow | Yes | No |
+| `/implement` with progress tracking | Yes | No |
 | `/resume`, `/pause`, `/switch` commands | Yes | No |
 | Researcher subagent (Opus, deep analysis) | Yes | No |
 | Auto-triggers (Claude Code only) | Yes | Yes |
@@ -184,10 +185,15 @@ For other tools, this installs the SKILL.md which teaches the tool the full spec
 ```
 # Start a new spec with deep research
 /specsmith:forge "add OAuth authentication"
-→ Deep research (reads 10-20+ files, web search, library docs)
+→ Deep research (codebase + internet + Context7 + library comparison)
 → Interview rounds (targeted questions, not generic)
-→ Writes SPEC.md with phases, tasks, decision log
-→ Implements task by task
+→ Writes SPEC.md with architecture diagrams, library choices, testing strategy
+→ Coherence and logic review before presenting
+
+# Implement the spec (or specific phases)
+/specsmith:implement                    # Continue from current task
+/specsmith:implement phase 2            # Implement all tasks in Phase 2
+/specsmith:implement all phases         # Implement everything remaining
 
 # Generate OpenAPI spec from your codebase
 /specsmith:openapi
@@ -282,15 +288,17 @@ All tools share the same files:
 
 ### Phase 1: Deep Research
 
-Not a quick scan. The researcher reads 10-20+ files, following dependency chains, checking tests, examining config. Also runs web searches for best practices, pulls library docs via Context7.
+Not a quick scan. The researcher reads 10-20+ files, following dependency chains, checking tests, examining config. Uses every available resource: web searches for best practices, Context7 for library docs, library comparisons, cross-skill research (frontend-design, datasmith-pg, etc.).
 
 Output saved to `.specs/<id>/research-01.md`. Covers:
 - Project architecture and directory structure
 - Every file touching the area of change
 - Tech stack versions (from lock files, not guesses)
 - How similar features are currently implemented
+- Library comparisons (2-3+ candidates per choice point)
 - Test patterns and coverage
 - Risk assessment
+- UI/UX research and design references (if applicable)
 
 ### Phase 2-4: Interviews
 
@@ -303,38 +311,43 @@ Multiple rounds (typically 2-5) until every task can be described concretely. Ea
 
 ### Phase 5: Write Spec
 
-Synthesizes everything into a SPEC.md:
-- 3-6 phases, each with concrete tasks
-- Each task is ~30 min to 2 hours of work
+Synthesizes everything into a comprehensive SPEC.md:
+- Architecture diagrams (ASCII and/or Mermaid)
+- Library comparison table with alternatives and rationale
+- 3-6 phases, each with concrete tasks (file paths, function names)
+- Comprehensive testing strategy (unit, integration, e2e, edge cases)
 - Decision log captures non-obvious technical choices
 - Resume context section ready for first pause
+- Mandatory coherence and logic review before presenting
 
 ### Phase 6: Implement
 
-Works through the spec task by task:
+Works through the spec task by task (via `/implement`):
 - Marks tasks `← current` as they start
 - Checks off `- [x]` when done
-- Updates phase status markers
+- Updates phase status markers and registry
+- Writes tests as specified in the testing strategy
 - Logs new decisions to the Decision Log
+- Logs deviations when implementation diverges from spec
 - Updates Resume Context at natural pauses
 
 ## Plan Mode
 
 Spec Smith **bypasses** Claude Code's built-in plan mode. The `/forge` command IS your planning phase — deep research, interviews, spec writing. You don't need plan mode at all.
 
-If you happen to be in plan mode when you run `/forge`, it still works:
-- Research and interviews are read-only and run fine
-- When it's time to write the spec, you'll be asked to exit plan mode (Shift+Tab) so files can be created
+If you happen to be in plan mode when you run `/specsmith:forge`, Spec Smith
+asks you to exit plan mode first (Shift+Tab), then rerun `/specsmith:forge`.
 
 ## Project Structure
 
 ```
 specsmith/
 ├── .claude-plugin/
-│   ├── plugin.json                 # Plugin metadata (v0.2.0)
+│   ├── plugin.json                 # Plugin metadata (v2.0.0)
 │   └── marketplace.json            # Marketplace registration
 ├── commands/
-│   ├── forge.md                    # Research → interview → spec → implement
+│   ├── forge.md                    # Research → interview → spec
+│   ├── implement.md                # Implement spec tasks, update progress
 │   ├── resume.md                   # Resume active spec
 │   ├── pause.md                    # Pause with context
 │   ├── switch.md                   # Switch between specs
@@ -344,7 +357,8 @@ specsmith/
 ├── agents/
 │   └── researcher.md               # Deep research subagent (Opus)
 ├── references/
-│   └── spec-format.md              # SPEC.md format specification
+│   ├── spec-format.md              # SPEC.md format specification
+│   └── command-contracts.md        # Behavioral contract checklist for commands/skill
 ├── SKILL.md                        # Universal skill (works with all tools)
 └── README.md
 ```
@@ -352,6 +366,8 @@ specsmith/
 ## Spec Format
 
 Full specification in [`references/spec-format.md`](references/spec-format.md).
+Behavioral guardrails in
+[`references/command-contracts.md`](references/command-contracts.md).
 
 ### Frontmatter
 
@@ -372,9 +388,36 @@ Full specification in [`references/spec-format.md`](references/spec-format.md).
 - **Task checkboxes**: `- [ ] [AUTH-01]` unchecked, `- [x] [AUTH-01]` done
 - **Current task**: `← current` after the task text
 - **Uncertainty**: `[NEEDS CLARIFICATION]` after the task code on unclear tasks
+- **Architecture Diagram**: ASCII art or Mermaid diagrams (system design, data flow, ER, state machines)
+- **Library Choices**: Comparison table with alternatives considered and rationale
+- **Testing Strategy**: Unit, integration, e2e, and edge case tests with frameworks and file paths
 - **Resume Context**: Blockquote with specific file paths, function names, exact next step
 - **Decision Log**: Table with date, decision, rationale
 - **Deviations**: Table tracking where implementation diverged from spec
+
+## Tested with Skill Creator
+
+Spec Smith has been iteratively developed and evaluated using Anthropic's
+[Skill Creator](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/skill-creator/skills/skill-creator/SKILL.md)
+— the official tool for building, testing, and benchmarking Claude Code skills.
+
+Each iteration was validated through parallel eval runs (with-skill vs
+without-skill baselines), automated assertion grading, and quantitative
+benchmarking across multiple test scenarios — forge workflow fidelity,
+interview gating, research depth, researcher agent spawning, spec quality,
+and implementation tracking.
+
+**Latest benchmark (iteration 5):**
+
+| Config | Pass Rate |
+|--------|-----------|
+| With Skill | **100%** (18/18 assertions) |
+| Without Skill | 61% (11/18 assertions) |
+| Delta | **+39%** |
+
+For more on how Skill Creator works — evals, A/B comparisons, benchmarking,
+and the iteration loop — see
+[Improving skill-creator: Test, measure, and refine Agent Skills](https://claude.com/blog/improving-skill-creator-test-measure-and-refine-agent-skills).
 
 ## Why Not Just Use Plan Mode?
 

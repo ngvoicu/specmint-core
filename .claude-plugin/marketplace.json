@@ -4,12 +4,15 @@
   "owner": {
     "name": "Gabriel Voicu"
   },
+  "metadata": {
+    "description": "Specsmith marketplace containing the specsmith plugin for persistent, resumable AI coding specs."
+  },
   "plugins": [
     {
       "name": "specsmith",
       "source": "./",
-      "description": "Structured spec management for AI coding workflows. Replaces ephemeral plans with persistent, resumable specs built through deep research and iterative interviews.",
-      "version": "0.2.0",
+      "description": "Structured spec management for AI coding workflows. Replaces ephemeral plans with persistent, resumable specs built through deep research, iterative interviews, architecture diagrams, library comparisons, and comprehensive testing strategies.",
+      "version": "2.0.0",
       "author": {
         "name": "Gabriel Voicu"
       },

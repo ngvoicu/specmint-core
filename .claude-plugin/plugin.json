@@ -1,7 +1,7 @@
 {
   "name": "specsmith",
-  "version": "0.2.0",
-  "description": "Structured spec management for AI coding workflows. Replaces ephemeral plans with persistent, resumable specs built through deep research and iterative interviews.",
+  "version": "2.0.0",
+  "description": "Structured spec management for AI coding workflows. Replaces ephemeral plans with persistent, resumable specs built through deep research, iterative interviews, architecture diagrams, library comparisons, and comprehensive testing strategies.",
   "author": {
     "name": "Gabriel Voicu"
   },

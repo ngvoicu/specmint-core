@@ -34,6 +34,58 @@ Requirements are lightweight acceptance criteria — what "done" looks like.
 Not every spec needs them (skip for small bug fixes), but for features
 they prevent scope creep and make verification clear.
 
+## Architecture
+
+<Include at least one diagram showing the system design. Use ASCII art for
+simple flows and Mermaid for complex relationships.>
+
+### System Diagram
+
+```
+Client → API Gateway → Auth Middleware → Route Handler → Database
+                                            ↓
+                                       Cache Layer
+```
+
+<Or use Mermaid for more complex diagrams:>
+
+```mermaid
+graph TD
+    A[Client] --> B[API Gateway]
+    B --> C{Auth Middleware}
+    C -->|Authenticated| D[Route Handler]
+    C -->|Unauthorized| E[401 Response]
+    D --> F[(Database)]
+    D --> G[Cache]
+```
+
+<For data models, use ER diagrams:>
+
+```mermaid
+erDiagram
+    USER ||--o{ ORDER : places
+    ORDER ||--|{ LINE_ITEM : contains
+    PRODUCT ||--o{ LINE_ITEM : "ordered in"
+```
+
+<For state machines and workflows:>
+
+```mermaid
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Review
+    Review --> Approved
+    Review --> Rejected
+    Approved --> Published
+    Rejected --> Draft
+```
+
+## Library Choices
+
+| Need | Library | Version | Alternatives Considered | Rationale |
+|------|---------|---------|------------------------|-----------|
+| <need> | <chosen> | <ver> | <alt1>, <alt2> | <why this one> |
+
 ## Phase 1: <Phase Name> [in-progress]
 
 - [x] [ID-01] <Completed task description>
@@ -51,6 +103,25 @@ they prevent scope creep and make verification clear.
 
 - [ ] [ID-08] <Task description>
 - [ ] [ID-09] <Task description>
+
+## Testing Strategy
+
+### Unit Tests
+- `tests/unit/<area>.test.ts` — <what it tests>
+- Framework: <Jest/Vitest/pytest/etc.>
+
+### Integration Tests
+- `tests/integration/<flow>.test.ts` — <what flows it tests>
+- Database/API interaction tests
+
+### End-to-End Tests
+- `tests/e2e/<scenario>.spec.ts` — <user flows tested>
+- Framework: <Playwright/Cypress/etc.>
+
+### Edge Case Tests
+- Boundary conditions: <list>
+- Error scenarios: <list>
+- Concurrent access: <list>
 
 ---
 

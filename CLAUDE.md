@@ -12,10 +12,11 @@ Spec Smith is a Claude Code plugin that replaces ephemeral AI coding plans with 
 ```
 specsmith/
 ├── .claude-plugin/          # Plugin metadata
-│   ├── plugin.json          # Name: specsmith, version 0.2.0
+│   ├── plugin.json          # Name: specsmith, version 2.0.0
 │   └── marketplace.json     # Marketplace registration
 ├── commands/                # Plugin slash commands (markdown instructions)
-│   ├── forge.md             # /forge — research → interview → spec → implement
+│   ├── forge.md             # /forge — research → interview → spec
+│   ├── implement.md         # /implement — implement spec tasks, update progress
 │   ├── resume.md            # /resume — pick up where you left off
 │   ├── pause.md             # /pause — save context and stop
 │   ├── switch.md            # /switch — change active spec
@@ -25,7 +26,8 @@ specsmith/
 ├── agents/
 │   └── researcher.md        # Deep research subagent (opus model)
 ├── references/
-│   └── spec-format.md       # Complete SPEC.md format specification
+│   ├── spec-format.md       # Complete SPEC.md format specification
+│   └── command-contracts.md # Behavioral contract checklist for commands/skill
 ├── skills/
 │   └── specsmith/
 │       └── SKILL.md         # → ../../SKILL.md (symlink for Claude Code plugin discovery)
@@ -39,7 +41,7 @@ specsmith/
 
 The plugin is consumed directly by Claude Code — no build step. Markdown files define behavior:
 
-- **`plugin.json`** — Plugin identity (name: `specsmith`, version: `0.2.0`)
+- **`plugin.json`** — Plugin identity (name: `specsmith`, version: `2.0.0`)
 - **`commands/*.md`** — Each file is a slash command. Claude reads these as instructions.
 - **`agents/researcher.md`** — Subagent definition. Uses Opus model with Read, Glob, Grep, Bash, WebSearch, WebFetch, Task tools for exhaustive codebase analysis.
 - **`SKILL.md`** — Universal skill with sections for all tools + Claude Code plugin section. Defines natural language triggers ("resume", "what was I working on", "create a spec for X") and session lifecycle behavior.
@@ -75,6 +77,9 @@ Full spec in `references/spec-format.md`. Summary:
 - **Phase status markers**: `[pending]`, `[in-progress]`, `[completed]`, `[blocked]`
 - **Task codes**: `[PREFIX-NN]` per task (e.g., `[AUTH-01]`), auto-incrementing across phases
 - **Task markers**: `- [ ] [AUTH-01]` unchecked, `- [x] [AUTH-01]` done, `← current` marks the active task
+- **Architecture Diagram**: ASCII art or Mermaid diagrams for system design, data flow, ER diagrams
+- **Library Choices**: Comparison table with alternatives considered and rationale
+- **Testing Strategy**: Unit, integration, e2e, and edge case tests with frameworks and file paths
 - **Resume Context**: Blockquote with specific file paths, function names, exact next step
 - **Decision Log**: Markdown table with date, decision, rationale
 
@@ -85,16 +90,25 @@ Phases: `[pending]`, `[in-progress]`, `[completed]`, `[blocked]`
 
 ### Forge Workflow Phases
 
-1. Deep Research → save to `.specs/<id>/research-01.md`
-2. Interview Round 1 → save to `.specs/<id>/interview-01.md`
+1. Deep Research (codebase + internet + Context7 + library comparison) → `research-01.md`
+2. Interview Round 1 → `interview-01.md`
 3. Deeper Research → `research-02.md`
 4. Interview Round 2+ → repeat until no ambiguity
-5. Write SPEC.md → `.specs/<id>/SPEC.md`
-6. Implement → work through tasks, update checkboxes
+5. Write SPEC.md (with architecture diagrams, library choices, testing strategy, coherence review) → `SPEC.md`
+6. Present spec and wait for user approval
+
+### Implement Workflow
+
+Triggered by "implement the spec", "implement phase N", or "implement all phases":
+- Reads active spec, identifies target tasks
+- Implements task by task, writing application code
+- Updates checkboxes, phase markers, and registry after each task
+- Writes tests as specified in the testing strategy
+- Logs deviations and decisions
 
 ## Versions
 
-- **Plugin**: v0.2.0 (`.claude-plugin/plugin.json`)
+- **Plugin**: v2.0.0 (`.claude-plugin/plugin.json`)
 - **Author**: Gabriel Voicu (`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`)
 
 ## Working on This Codebase
