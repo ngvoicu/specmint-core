@@ -44,8 +44,10 @@ For each task in scope, in order:
    testing strategy calls for it
 4. **Run tests** to verify correctness after implementation
 
-### Update Progress
+### Update Progress (sacred — never skip)
 
+Progress tracking is the most important bookkeeping in specsmith. If you
+skip this, resume breaks, the registry lies, and the spec becomes useless.
 After completing each task, immediately update the spec files:
 
 1. Check off the task: `- [ ]` → `- [x]`
@@ -54,10 +56,17 @@ After completing each task, immediately update the spec files:
 4. If all tasks in the current phase are done:
    - Phase status: `[in-progress]` → `[completed]`
    - Next phase (if any): `[pending]` → `[in-progress]`
+   - Review Acceptance Criteria — check off any that are now satisfied
 5. Update the `updated` date in YAML frontmatter
 6. Recompute progress count (X/Y) from checkboxes
 7. Update progress and `updated` date in `.specs/registry.md`
-8. Update Resume Context with current state
+8. **Verify**: Re-read both `SPEC.md` and `registry.md` to confirm edits
+   landed. If registry progress doesn't match SPEC.md checkbox count, fix
+   it before moving on.
+9. Update Resume Context with current state
+
+If you realize you forgot to update after a previous task, stop and fix
+it now before continuing with the next task.
 
 ### Handle Issues
 
@@ -76,6 +85,8 @@ After completing each task, immediately update the spec files:
 When all in-scope tasks are done:
 
 - If all tasks in the spec are complete:
+  - Verify all Acceptance Criteria are checked. If any remain unchecked,
+    report which ones and ask the user before marking complete.
   - Set all phases to `[completed]`
   - Set spec status to `completed` in frontmatter
   - Update `.specs/registry.md` with `completed` status

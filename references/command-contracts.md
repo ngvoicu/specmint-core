@@ -11,6 +11,13 @@ This file defines functional contracts for `commands/*.md` and the universal
 4. Forge workflow never writes application code.
 5. Phase markers use `[pending]`, `[in-progress]`, `[completed]`, `[blocked]`.
    Task lines use checkboxes and `← current`; tasks are not tagged `[blocked]`.
+6. **Progress tracking is sacred.** After every task completion: update SPEC.md
+   (checkbox, current marker, phase marker), update registry (progress, date),
+   then re-read both files to verify consistency. Never skip this.
+7. **Acceptance criteria are required for feature specs.** Forge must include
+   an `## Acceptance Criteria` section with testable checkbox conditions.
+   Implement must check off criteria as they are satisfied and verify all are
+   met before marking a spec complete.
 
 ## Command Contracts
 
@@ -24,13 +31,19 @@ This file defines functional contracts for `commands/*.md` and the universal
    `SPEC.md`, `registry.md` updates).
 5. After approval, handoff to `/specsmith:implement` instead of implementing
    inside forge.
+6. Interview must ask about acceptance criteria ("What does 'done' look like?").
+7. SPEC.md must include `## Acceptance Criteria` with testable checkboxes.
 
 ### `/specsmith:implement`
 
 1. Supports scope parsing: current flow, phase-specific, all phases, task code.
 2. For each completed task: checkbox + current marker + phase markers +
-   frontmatter `updated` + registry progress/date.
-3. Blocked handling:
+   frontmatter `updated` + registry progress/date. Then re-read both files
+   to verify consistency.
+3. At phase completion, review and check off satisfied acceptance criteria.
+4. At spec completion, verify all acceptance criteria are checked before
+   marking complete.
+5. Blocked handling:
    - Keep blocked tasks unchecked.
    - Mark phase `[blocked]` only when the phase is blocked.
    - Record blocker context in Resume Context/Decision Log/Deviations as needed.

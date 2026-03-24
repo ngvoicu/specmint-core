@@ -12,7 +12,7 @@ Spec Smith is a Claude Code plugin that replaces ephemeral AI coding plans with 
 ```
 specsmith/
 ├── .claude-plugin/          # Plugin metadata
-│   ├── plugin.json          # Name: specsmith, version 2.0.0
+│   ├── plugin.json          # Name: specsmith, version 2.1.0
 │   └── marketplace.json     # Marketplace registration
 ├── commands/                # Plugin slash commands (markdown instructions)
 │   ├── forge.md             # /forge — research → interview → spec
@@ -41,7 +41,7 @@ specsmith/
 
 The plugin is consumed directly by Claude Code — no build step. Markdown files define behavior:
 
-- **`plugin.json`** — Plugin identity (name: `specsmith`, version: `2.0.0`)
+- **`plugin.json`** — Plugin identity (name: `specsmith`, version: `2.1.0`)
 - **`commands/*.md`** — Each file is a slash command. Claude reads these as instructions.
 - **`agents/researcher.md`** — Subagent definition. Uses Opus model with Read, Glob, Grep, Bash, WebSearch, WebFetch, Task tools for exhaustive codebase analysis.
 - **`SKILL.md`** — Universal skill with sections for all tools + Claude Code plugin section. Defines natural language triggers ("resume", "what was I working on", "create a spec for X") and session lifecycle behavior.
@@ -108,7 +108,7 @@ Triggered by "implement the spec", "implement phase N", or "implement all phases
 
 ## Versions
 
-- **Plugin**: v2.0.0 (`.claude-plugin/plugin.json`)
+- **Plugin**: v2.1.0 (`.claude-plugin/plugin.json`)
 - **Author**: Gabriel Voicu (`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`)
 
 ## Working on This Codebase

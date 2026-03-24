@@ -160,6 +160,8 @@ generic questions — your research should inform very specific questions.
    - Technical choices: "I see you're using Library A for similar things.
      Should we stick with that or is there a reason to try Library B?"
    - User-facing behavior: "What should happen when X fails?"
+   - Acceptance criteria: "What does 'done' look like? Any specific
+     conditions that must be true when this is complete?"
 4. **Propose a rough approach** and ask for reactions — don't wait for the
    user to design everything
 
@@ -254,27 +256,31 @@ spec should include:
    priority, tags
 2. **Overview**: 2-4 sentences capturing the goal and scope. Someone reading
    just this section should understand what's being built and why.
-3. **Architecture Diagram**: ASCII art or Mermaid diagram showing the system
+3. **Acceptance Criteria**: Testable checkbox conditions defining "done".
+   Each criterion must be specific and verifiable. Derived from the
+   interview answers and research findings. Check them off during
+   implementation as they become satisfied.
+4. **Architecture Diagram**: ASCII art or Mermaid diagram showing the system
    architecture, data flow, or component relationships. Every non-trivial spec
    should have at least one diagram. Use ASCII for simple flows, Mermaid for
    complex relationships (ER diagrams, state machines, flowcharts).
-4. **Library Choices**: Table comparing evaluated libraries with the selected
+5. **Library Choices**: Table comparing evaluated libraries with the selected
    pick and rationale. Include version numbers. Format:
    `| Need | Library | Version | Alternatives | Rationale |`
-5. **Phases**: Major milestones (3-6 typical). Each phase should represent a
+6. **Phases**: Major milestones (3-6 typical). Each phase should represent a
    coherent chunk of work that's independently testable or demoable.
-6. **Tasks**: Concrete, actionable checkboxes within each phase. Each task
+7. **Tasks**: Concrete, actionable checkboxes within each phase. Each task
    should be completable in one focused session. Include specific file paths
    and function names where known. Proposed solutions should be simple,
    maintainable, and professional — clean code, modern patterns, innovative
    where appropriate.
-7. **Testing Strategy**: Comprehensive testing plan covering unit tests,
+8. **Testing Strategy**: Comprehensive testing plan covering unit tests,
    integration tests, e2e tests, and edge case tests. Specify frameworks,
    test file paths, and what each test covers. Every feature task should have
    a corresponding test task.
-8. **Resume Context**: Write the initial context as if briefing someone who
+9. **Resume Context**: Write the initial context as if briefing someone who
    will start implementing tomorrow.
-9. **Decision Log**: Every decision from the interviews, with rationale.
+10. **Decision Log**: Every decision from the interviews, with rationale.
 
 **Coherence and logic review (mandatory before presenting):**
 
@@ -290,6 +296,8 @@ Before presenting the spec to the user, review it for coherence and logic:
 7. Ensure the overview accurately summarizes what the phases will deliver
 8. Look for gaps — is there anything the implementation would need that
    isn't covered by a task?
+9. Verify acceptance criteria are specific, testable, and cover the key
+   behaviors the user expects
 
 **Quality check before presenting:**
 

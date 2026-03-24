@@ -343,7 +343,7 @@ asks you to exit plan mode first (Shift+Tab), then rerun `/specsmith:forge`.
 ```
 specsmith/
 ├── .claude-plugin/
-│   ├── plugin.json                 # Plugin metadata (v2.0.0)
+│   ├── plugin.json                 # Plugin metadata (v2.1.0)
 │   └── marketplace.json            # Marketplace registration
 ├── commands/
 │   ├── forge.md                    # Research → interview → spec

@@ -24,15 +24,19 @@ tags: [<tag1>, <tag2>]
 enough context that someone resuming cold can understand the goal without
 reading the full conversation history.>
 
-## Requirements
+## Acceptance Criteria
 
-- <When X happens, the system shall Y>
-- <The Z component shall do W>
-- [NEEDS CLARIFICATION] <Ambiguous requirement that needs discussion>
+- [ ] <When X happens, the system does Y>
+- [ ] <The Z component returns W with status code N>
+- [ ] <Users can perform action A and see result B>
+- [ ] [NEEDS CLARIFICATION] <Ambiguous criterion that needs discussion>
 
-Requirements are lightweight acceptance criteria — what "done" looks like.
-Not every spec needs them (skip for small bug fixes), but for features
-they prevent scope creep and make verification clear.
+Testable conditions that define when the spec is "done". Each criterion
+is a checkbox — checked off during implementation as it becomes satisfied.
+Be specific and verifiable: "returns 401 with error body" not "handles
+errors correctly". At spec completion, all criteria must be checked.
+Skip for trivial bug fixes, but features always need them — they prevent
+scope creep and make verification unambiguous.
 
 ## Architecture
 

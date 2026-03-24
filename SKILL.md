@@ -15,9 +15,10 @@ description: >
 # Spec Smith
 
 Turn ephemeral plans into structured, persistent specs built through deep
-research and iterative interviews. Specs have phases, tasks, resume context,
-and a decision log. They live in `.specs/` at the project root and work
-with any AI coding tool that can read markdown.
+research and iterative interviews. Specs have phases, tasks, acceptance
+criteria, a registry, resume context, a decision log, and a deviations
+log. They live in `.specs/` at the project root and work with any AI
+coding tool that can read markdown.
 
 Whether `.specs/` is committed is repository policy. Respect `.gitignore`
 and the user's preference for tracked vs local-only spec state.
@@ -34,6 +35,12 @@ and the user's preference for tracked vs local-only spec state.
 4. **Active-spec rule**: Target exactly one active spec at a time.
 5. **Parser policy**: Use best-effort parsing with clear warnings and repair
    guidance instead of hard failure on malformed rows.
+6. **Progress tracking is sacred**: After completing any task, immediately
+   update SPEC.md (checkbox, `← current` marker, phase marker) AND
+   registry.md (progress count, date). Then re-read both files to verify
+   the edits landed correctly. Never move to the next task without updating
+   both files. Never end a session with the registry out of sync with
+   SPEC.md. This is non-negotiable — if you do nothing else, do this.
 
 ## Claude Code Plugin
 
@@ -95,23 +102,31 @@ When the user says "resume", "what was I working on", or similar:
 
 **After completing each task, immediately edit the SPEC.md file** to record
 progress. Do not wait until the end of a session or until asked — update the
-spec as you go:
+spec as you go. This is sacred (see Critical Invariant #6).
 
 1. Check off the completed task: `- [ ]` -> `- [x]`
 2. Move `← current` to the next unchecked task
 3. When all tasks in a phase are done:
    - Phase status: `[in-progress]` -> `[completed]`
    - Next phase: `[pending]` -> `[in-progress]`
+   - Review Acceptance Criteria — check off any that are now satisfied
 4. Update the `updated` date in YAML frontmatter
 5. Update progress (`X/Y`) and `updated` date in `.specs/registry.md`
 
-**Update transaction (required order):**
-1. Update `SPEC.md` first (status/task/phase/resume context).
+**Update transaction (required order — never skip steps):**
+1. Edit `SPEC.md` (checkbox, current marker, phase marker, resume context).
 2. Recompute progress directly from `SPEC.md` checkboxes.
-3. Update the matching registry row (status/progress/updated).
-4. Re-read both files to verify consistency.
+3. Edit the matching registry row (status, progress, updated date).
+4. **Verify**: Re-read both `SPEC.md` and `registry.md` to confirm the
+   edits are correct. If the registry progress doesn't match the SPEC.md
+   checkbox count, fix it now.
 5. If registry update fails, keep `SPEC.md` as source of truth and emit a
    warning with exact repair action for `.specs/registry.md`.
+
+**If you notice you forgot to update after a previous task, stop what
+you're doing and update now before continuing.** Stale tracking is the
+single most common failure mode — it makes resume unreliable and the
+registry useless.
 
 Also:
 - If a task is more complex than expected, split it into subtasks
@@ -182,6 +197,26 @@ Status values: `active`, `paused`, `completed`, `archived`
   auto-increment across all phases starting at `01`
 - `← current` after the task text marks the active task
 - `[NEEDS CLARIFICATION]` after the task code on unclear tasks
+
+### Acceptance Criteria
+
+Testable conditions that define when the spec is "done". Written during
+forge, verified after each phase completes. Format: checkboxes with
+specific, verifiable statements — not vague goals.
+
+```markdown
+## Acceptance Criteria
+
+- [ ] Users can sign in with Google OAuth and receive a JWT
+- [ ] Expired tokens return 401 with `{"error": "token_expired"}`
+- [ ] Refresh tokens rotate on each use (old token is invalidated)
+- [ ] Rate limiting returns 429 after 100 requests per minute
+```
+
+Check off criteria as they are satisfied during implementation. At phase
+completion, review which acceptance criteria are now met. At spec
+completion, all criteria must be checked — if any remain unchecked, the
+spec is not done.
 
 ### Resume Context
 
@@ -309,6 +344,8 @@ should inform specific questions, not generic ones.
    - Scope boundaries ("Should this handle X edge case?")
    - Technical choices ("Stick with Library A or try Library B?")
    - User-facing behavior ("What should happen when X fails?")
+   - Acceptance criteria ("What does 'done' look like? Any specific
+     conditions that must be true when this is complete?")
 4. **Propose a rough approach** and ask for reactions
 
 **STOP after presenting questions.** Wait for the user to answer before
@@ -347,6 +384,9 @@ to implement the feature without guessing. Include:
 
 - YAML frontmatter (id, title, status, created, updated, priority, tags)
 - Overview (2-4 sentences — what's being built and why)
+- **Acceptance Criteria** — Testable conditions defining "done". Checkbox
+  format so they can be checked off during implementation. Each criterion
+  should be specific and verifiable, not vague ("works correctly").
 - **Architecture Diagram** — ASCII art or Mermaid diagram showing the system
   architecture, data flow, or component relationships. Every non-trivial spec
   should have at least one diagram. Use ASCII for simple flows, Mermaid for
@@ -400,6 +440,8 @@ to implement the feature without guessing. Include:
 7. Ensure the overview accurately summarizes what the phases will deliver
 8. Look for gaps — is there anything the implementation would need that
    isn't covered by a task?
+9. Verify acceptance criteria are specific, testable, and cover the key
+   behaviors the user expects
 
 Save to `.specs/<id>/SPEC.md`. Update `.specs/registry.md` — set
 status to `active`.
@@ -464,6 +506,8 @@ When implementing, follow the testing strategy from the spec:
 ### Completion
 
 When all tasks are done:
+- Verify all Acceptance Criteria are checked off. If any remain unchecked,
+  report which ones and ask the user before marking the spec complete.
 - Set all phases to `[completed]`
 - Set spec status to `completed` in frontmatter and registry
 - Update the `updated` date
