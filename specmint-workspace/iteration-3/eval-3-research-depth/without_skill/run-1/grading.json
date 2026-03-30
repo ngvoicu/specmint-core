@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "Context7 or library documentation lookup was attempted or mentioned",
+      "passed": false,
+      "evidence": "No Context7 or library documentation lookup found"
+    },
+    {
+      "text": "Web research was conducted (WebSearch or WebFetch or searching for best practices)",
+      "passed": false,
+      "evidence": "No web research evidence found"
+    },
+    {
+      "text": "Library comparison was performed (comparing caching libraries or approaches)",
+      "passed": false,
+      "evidence": "No library comparison evidence found"
+    },
+    {
+      "text": "Research notes were saved to a file",
+      "passed": false,
+      "evidence": "No research file found"
+    },
+    {
+      "text": "Interview questions were asked to the user",
+      "passed": true,
+      "evidence": "Found 76 questions"
+    },
+    {
+      "text": "The agent stopped and waited for user input after asking questions",
+      "passed": false,
+      "evidence": "No evidence agent stopped to wait"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 5,
+    "total": 6,
+    "pass_rate": 0.1667
+  },
+  "execution_metrics": {
+    "output_chars": 8230,
+    "transcript_chars": 8230,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

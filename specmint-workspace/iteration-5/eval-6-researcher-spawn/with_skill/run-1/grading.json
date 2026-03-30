@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "The researcher agent was spawned (mentions spawning, Task tool, or specsmith:researcher)",
+      "passed": true,
+      "evidence": "Researcher spawn evidence: ['spawn', 'specsmith:researcher', 'researcher agent', 'task tool']"
+    },
+    {
+      "text": "The researcher was given a specific output path for research notes",
+      "passed": true,
+      "evidence": "Research output path specified: ['research-01.md', '.specs/', 'output path', 'save to']"
+    },
+    {
+      "text": "Context7 or library documentation lookup was attempted in parallel",
+      "passed": true,
+      "evidence": "Context7/library docs evidence: ['context7', 'resolve-library', 'query-docs', 'library doc', 'parallel']"
+    },
+    {
+      "text": "Research notes contain library comparison tables",
+      "passed": true,
+      "evidence": "Library comparison evidence: ['comparison', 'compare', 'vs ', '| library']"
+    },
+    {
+      "text": "Research notes contain a risk assessment section",
+      "passed": true,
+      "evidence": "Risk assessment evidence: ['risk', 'breaking changes', 'security', 'performance', 'scalability', 'migration']"
+    },
+    {
+      "text": "Interview questions were asked and agent stopped to wait",
+      "passed": true,
+      "evidence": "Agent stopped and waited for user input"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "output_chars": 32482,
+    "transcript_chars": 16962,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

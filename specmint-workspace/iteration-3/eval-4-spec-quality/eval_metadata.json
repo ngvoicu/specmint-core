@@ -1,0 +1,13 @@
+{
+  "eval_id": 4,
+  "eval_name": "spec-quality",
+  "prompt": "We've completed the research and interview rounds for the commenting system spec. Here's the summary of decisions: Next.js 14 App Router, PostgreSQL with Prisma, Tiptap for rich text editing, Pusher for real-time updates, nested replies up to 3 levels deep, mark-as-read tracking. The research notes are in .specs/commenting-system/research-01.md and interview in interview-01.md. Please write the SPEC.md now — make it comprehensive with architecture diagrams, library comparison table, and testing strategy. Save all output files to the outputs directory.",
+  "assertions": [
+    "An architecture diagram was included (ASCII art or Mermaid)",
+    "A library choices or comparison table was included",
+    "A testing strategy section was included with test types",
+    "Tasks are concrete with file paths or function names",
+    "A coherence or logic review was mentioned or performed",
+    "The spec has multiple phases with status markers"
+  ]
+}

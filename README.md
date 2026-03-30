@@ -1,8 +1,8 @@
-# Spec Smith
+# Spec Mint Core
 
 **Plan mode, but actually good.**
 
-Spec Smith replaces ephemeral AI coding plans with persistent, resumable specs built through deep research and iterative interviews. Create a spec, work through it task by task, pause, switch to another spec, come back a week later and pick up exactly where you left off.
+Spec Mint Core replaces ephemeral AI coding plans with persistent, resumable specs built through deep research and iterative interviews. Create a spec, work through it task by task, pause, switch to another spec, come back a week later and pick up exactly where you left off.
 
 Works with Claude Code (as a plugin), Codex, Cursor, Windsurf, Cline, Gemini CLI, and any AI coding tool that can read files.
 
@@ -15,13 +15,13 @@ Every AI coding tool has some version of "plan mode" — think before you code. 
 - **Track** which tasks are done and which are next
 - **Persist** the research and decisions that informed the plan
 
-Spec Smith fixes all of this.
+Spec Mint Core fixes all of this.
 
 ## How It Works
 
 ### The Forge Workflow
 
-Run `/specsmith:forge "add user authentication with OAuth"` and Spec Smith takes over:
+Run `/specmint-core:forge "add user authentication with OAuth"` and Spec Mint Core takes over:
 
 **1. Deep Research** — Exhaustive codebase scan (reads 10-20+ actual files, not just file names), web search for best practices, Context7 library docs, library comparisons, cross-skill research (frontend-design, datasmith-pg, etc.), UI inspection if applicable. Everything saved to `.specs/<id>/research-01.md`.
 
@@ -53,7 +53,7 @@ Specs live in `.specs/` at your project root — plain markdown with YAML frontm
 **SPEC.md frontmatter is authoritative.** `.specs/registry.md` is a
 denormalized index for quick lookups.
 
-For this `specsmith` repository, `.specs/` is intentionally gitignored for
+For this `specmint-core` repository, `.specs/` is intentionally gitignored for
 local dogfooding. In consumer projects, you can choose to commit `.specs/`.
 
 ### A SPEC.md Looks Like This
@@ -116,7 +116,7 @@ API. Uses the existing middleware pattern in src/middleware/.
 
 ## Installation
 
-Two ways to use Spec Smith, depending on your setup.
+Two ways to use Spec Mint Core, depending on your setup.
 
 ### Path 1: Claude Code Plugin (Full — Recommended)
 
@@ -124,18 +124,18 @@ Everything: all 8 slash commands (`/forge`, `/implement`, `/resume`, `/pause`, `
 
 ```bash
 # In Claude Code, run:
-/plugin marketplace add ngvoicu/specsmith
-/plugin install specsmith
+/plugin marketplace add ngvoicu/specmint-core
+/plugin install specmint-core
 ```
 
 Or manually:
 ```bash
-git clone https://github.com/ngvoicu/specsmith.git ~/.claude/plugins/specsmith
+git clone https://github.com/ngvoicu/specmint-core.git ~/.claude/plugins/specmint-core
 ```
 
 After install, just run:
 ```
-/specsmith:forge "add user authentication"
+/specmint-core:forge "add user authentication"
 ```
 
 ### Path 2: Quick Setup via npx (Any Tool)
@@ -144,22 +144,22 @@ Installs the SKILL.md into your tool's skill/instruction directory so it knows h
 
 ```bash
 # Claude Code (skill only — auto-triggers, no slash commands)
-npx skills add ngvoicu/specsmith -a claude-code
+npx skills add ngvoicu/specmint-core -g -a claude-code
 
 # OpenAI Codex
-npx skills add ngvoicu/specsmith -a codex
+npx skills add ngvoicu/specmint-core -g -a codex
 
 # Cursor
-npx skills add ngvoicu/specsmith -a cursor
+npx skills add ngvoicu/specmint-core -g -a cursor
 
 # Windsurf
-npx skills add ngvoicu/specsmith -a windsurf
+npx skills add ngvoicu/specmint-core -g -a windsurf
 
 # Cline
-npx skills add ngvoicu/specsmith -a cline
+npx skills add ngvoicu/specmint-core -g -a cline
 
 # Gemini CLI
-npx skills add ngvoicu/specsmith -a gemini
+npx skills add ngvoicu/specmint-core -g -a gemini
 ```
 
 For Claude Code, this installs SKILL.md with auto-triggers ("resume", "what was I working on", "create a spec for X"). You **don't** get slash commands or the researcher agent — use Path 1 for the full plugin.
@@ -184,34 +184,34 @@ For other tools, this installs the SKILL.md which teaches the tool the full spec
 
 ```
 # Start a new spec with deep research
-/specsmith:forge "add OAuth authentication"
+/specmint-core:forge "add OAuth authentication"
 → Deep research (codebase + internet + Context7 + library comparison)
 → Interview rounds (targeted questions, not generic)
 → Writes SPEC.md with architecture diagrams, library choices, testing strategy
 → Coherence and logic review before presenting
 
 # Implement the spec (or specific phases)
-/specsmith:implement                    # Continue from current task
-/specsmith:implement phase 2            # Implement all tasks in Phase 2
-/specsmith:implement all phases         # Implement everything remaining
+/specmint-core:implement                    # Continue from current task
+/specmint-core:implement phase 2            # Implement all tasks in Phase 2
+/specmint-core:implement all phases         # Implement everything remaining
 
 # Generate OpenAPI spec from your codebase
-/specsmith:openapi
+/specmint-core:openapi
 → Scans routes, schemas, security config
 → Writes .openapi/openapi.yaml + per-endpoint docs
 
 # Session ends — save context
-/specsmith:pause
+/specmint-core:pause
 → Writes detailed resume context (file paths, function names, next step)
 
 # New session — pick up where you left off
-/specsmith:resume
+/specmint-core:resume
 → Reads resume context, continues from exact spot
 
 # Juggling features
-/specsmith:list                    # See all specs
-/specsmith:switch auth-system      # Pauses current, activates auth-system
-/specsmith:status                  # Detailed progress
+/specmint-core:list                    # See all specs
+/specmint-core:switch auth-system      # Pauses current, activates auth-system
+/specmint-core:status                  # Detailed progress
 ```
 
 ### Any Tool Flow (Codex, Cursor, Windsurf, Cline, Gemini CLI)
@@ -269,7 +269,7 @@ The spec format is pure markdown. Claude Code, Codex, Cursor, Windsurf, Cline, a
 Most tools can be set up via npx (see [Path 2](#path-2-quick-setup-via-npx-any-tool) above):
 
 ```bash
-npx skills add ngvoicu/specsmith -a <tool>
+npx skills add ngvoicu/specmint-core -g -a <tool>
 ```
 
 For manual setup, see the snippet format in [SKILL.md](SKILL.md).
@@ -333,15 +333,15 @@ Works through the spec task by task (via `/implement`):
 
 ## Plan Mode
 
-Spec Smith **bypasses** Claude Code's built-in plan mode. The `/forge` command IS your planning phase — deep research, interviews, spec writing. You don't need plan mode at all.
+Spec Mint Core **bypasses** Claude Code's built-in plan mode. The `/forge` command IS your planning phase — deep research, interviews, spec writing. You don't need plan mode at all.
 
-If you happen to be in plan mode when you run `/specsmith:forge`, Spec Smith
-asks you to exit plan mode first (Shift+Tab), then rerun `/specsmith:forge`.
+If you happen to be in plan mode when you run `/specmint-core:forge`, Spec Mint Core
+asks you to exit plan mode first (Shift+Tab), then rerun `/specmint-core:forge`.
 
 ## Project Structure
 
 ```
-specsmith/
+specmint-core/
 ├── .claude-plugin/
 │   ├── plugin.json                 # Plugin metadata (v2.1.0)
 │   └── marketplace.json            # Marketplace registration
@@ -397,7 +397,7 @@ Behavioral guardrails in
 
 ## Tested with Skill Creator
 
-Spec Smith has been iteratively developed and evaluated using Anthropic's
+Spec Mint Core has been iteratively developed and evaluated using Anthropic's
 [Skill Creator](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/skill-creator/skills/skill-creator/SKILL.md)
 — the official tool for building, testing, and benchmarking Claude Code skills.
 
@@ -423,13 +423,23 @@ and the iteration loop — see
 
 Plan mode is a good idea with a bad implementation. It restricts Claude to read-only tools and asks for a plan. That's it. No persistence, no research depth, no interviews, no progress tracking.
 
-Spec Smith's `/forge` command does what plan mode should do:
+Spec Mint Core's `/forge` command does what plan mode should do:
 
 - **Research depth**: Reads 10-20+ files, searches the web, pulls library docs. Not a quick scan.
 - **Interviews**: Asks you targeted questions based on what it found. Multiple rounds until there's no ambiguity.
 - **Persistence**: Everything is saved to files. Research notes, interviews, the spec itself. Nothing lives only in context.
 - **Resumability**: Close the terminal, come back next week. The spec remembers exactly where you were.
 - **Multi-spec**: Juggle multiple features. Switch between them with one command.
+
+## The Mint Plugin Family
+
+Spec Mint Core is part of the Mint plugin family:
+
+| Plugin | Purpose |
+|--------|---------|
+| **[specmint-core](https://github.com/ngvoicu/specmint-core)** | Persistent spec management — forge, implement, resume, pause |
+| **[specmint-tdd](https://github.com/ngvoicu/specmint-tdd)** | TDD-first fork with red-green-refactor enforcement |
+| **[schemint-pg](https://github.com/ngvoicu/schemint-pg)** | PostgreSQL schema design expertise — patterns, migrations, performance |
 
 ## License
 

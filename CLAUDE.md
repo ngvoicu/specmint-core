@@ -1,8 +1,8 @@
-# CLAUDE.md — Spec Smith
+# CLAUDE.md — Spec Mint Core
 
 ## Project Overview
 
-Spec Smith is a Claude Code plugin that replaces ephemeral AI coding plans with persistent, resumable specs. It has two layers:
+Spec Mint Core is a Claude Code plugin that replaces ephemeral AI coding plans with persistent, resumable specs. It has two layers:
 
 1. **Plugin layer** — Markdown-based Claude Code plugin (commands, agents, skill)
 2. **Skill layer** — Universal SKILL.md that works with any AI coding tool via `npx skills add`
@@ -10,9 +10,9 @@ Spec Smith is a Claude Code plugin that replaces ephemeral AI coding plans with 
 ## Repository Structure
 
 ```
-specsmith/
+specmint-core/
 ├── .claude-plugin/          # Plugin metadata
-│   ├── plugin.json          # Name: specsmith, version 2.1.0
+│   ├── plugin.json          # Name: specmint-core, version 1.0.0
 │   └── marketplace.json     # Marketplace registration
 ├── commands/                # Plugin slash commands (markdown instructions)
 │   ├── forge.md             # /forge — research → interview → spec
@@ -29,7 +29,7 @@ specsmith/
 │   ├── spec-format.md       # Complete SPEC.md format specification
 │   └── command-contracts.md # Behavioral contract checklist for commands/skill
 ├── skills/
-│   └── specsmith/
+│   └── specmint-core/
 │       └── SKILL.md         # → ../../SKILL.md (symlink for Claude Code plugin discovery)
 ├── SKILL.md                 # Universal skill definition (works with all tools)
 └── README.md
@@ -41,7 +41,7 @@ specsmith/
 
 The plugin is consumed directly by Claude Code — no build step. Markdown files define behavior:
 
-- **`plugin.json`** — Plugin identity (name: `specsmith`, version: `2.1.0`)
+- **`plugin.json`** — Plugin identity (name: `specmint-core`, version: `3.0.0`)
 - **`commands/*.md`** — Each file is a slash command. Claude reads these as instructions.
 - **`agents/researcher.md`** — Subagent definition. Uses Opus model with Read, Glob, Grep, Bash, WebSearch, WebFetch, Task tools for exhaustive codebase analysis.
 - **`SKILL.md`** — Universal skill with sections for all tools + Claude Code plugin section. Defines natural language triggers ("resume", "what was I working on", "create a spec for X") and session lifecycle behavior.
@@ -108,7 +108,7 @@ Triggered by "implement the spec", "implement phase N", or "implement all phases
 
 ## Versions
 
-- **Plugin**: v2.1.0 (`.claude-plugin/plugin.json`)
+- **Plugin**: v1.0.0 (`.claude-plugin/plugin.json`)
 - **Author**: Gabriel Voicu (`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`)
 
 ## Working on This Codebase
@@ -118,5 +118,5 @@ Triggered by "implement the spec", "implement phase N", or "implement all phases
 - The Claude Code Plugin section in SKILL.md is tool-specific (~20 lines at the top)
 - All supported tools use `npx skills add` for setup
 - No build step — markdown files are consumed directly
-- Windsurf install copies SKILL.md directly to `.windsurf/skills/specsmith/SKILL.md` (npx creates symlinks that Cascade doesn't follow, so users replace the symlink with a real copy)
-- To test plugin changes locally: install the plugin in a test project (`claude plugin add /path/to/specsmith`), then run slash commands (`/forge`, `/resume`, etc.) and verify behavior
+- Windsurf install copies SKILL.md directly to `.windsurf/skills/specmint-core/SKILL.md` (npx creates symlinks that Cascade doesn't follow, so users replace the symlink with a real copy)
+- To test plugin changes locally: install the plugin in a test project (`claude plugin add /path/to/specmint-core`), then run slash commands (`/forge`, `/resume`, etc.) and verify behavior

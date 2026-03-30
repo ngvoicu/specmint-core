@@ -1,0 +1,13 @@
+{
+  "eval_id": 9,
+  "eval_name": "implement-registry-consistency",
+  "prompt": "implement phase 1",
+  "assertions": [
+    "Agent identified the active spec from the registry",
+    "Agent scoped implementation to phase 1 only",
+    "Task checkboxes were updated in SPEC.md for completed tasks",
+    "Phase marker was updated when all phase 1 tasks were done (in-progress to completed)",
+    "Registry progress count was updated to reflect completed tasks",
+    "Registry and SPEC.md are consistent after implementation"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "Research notes are saved to .specs/<id>/research-01.md",
+      "passed": false,
+      "evidence": "No research-01.md file found in outputs and no mention in transcript"
+    },
+    {
+      "text": "At least one round of interactive questions is asked to the user (not rhetorical)",
+      "passed": true,
+      "evidence": "Found 13 question lines. Example: '  postId    String?  // relevant post (for comments/likes)'"
+    },
+    {
+      "text": "The agent pauses/stops after asking questions, waiting for user input before proceeding",
+      "passed": false,
+      "evidence": "No evidence that agent stopped to wait for user input"
+    },
+    {
+      "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+      "passed": true,
+      "evidence": "No SPEC.md found in outputs"
+    },
+    {
+      "text": "No application code (components, API routes, etc.) is written",
+      "passed": true,
+      "evidence": "No application code files found in outputs"
+    },
+    {
+      "text": "A .specs/ directory structure is initialized",
+      "passed": true,
+      "evidence": "Transcript shows .specs/ directory was initialized"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 2,
+    "total": 6,
+    "pass_rate": 0.6667
+  },
+  "execution_metrics": {
+    "output_chars": 6736,
+    "transcript_chars": 6736,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

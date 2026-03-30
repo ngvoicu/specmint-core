@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "The agent recognized 'write a spec' as a forge workflow trigger",
+      "passed": false,
+      "evidence": "No evidence of forge workflow recognition"
+    },
+    {
+      "text": "Research was conducted (codebase scan, dependency check, or web research)",
+      "passed": true,
+      "evidence": "Research evidence: ['dependencies', 'structure', 'read']"
+    },
+    {
+      "text": "Interview questions were asked to the user about architecture, scope, or technical decisions",
+      "passed": true,
+      "evidence": "Found 29 questions. Example: '1. What's your current tech stack? (language, framework, database)'"
+    },
+    {
+      "text": "The agent stopped and waited for user input after asking questions (did not self-answer)",
+      "passed": true,
+      "evidence": "Agent stopped and waited for user input"
+    },
+    {
+      "text": "No application code (Stripe integration, webhook handlers, etc.) was written",
+      "passed": true,
+      "evidence": "No application code files in outputs"
+    },
+    {
+      "text": "No premature implementation started after writing any spec files",
+      "passed": true,
+      "evidence": "No implementation activity found in transcript"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 1,
+    "total": 6,
+    "pass_rate": 0.8333
+  },
+  "execution_metrics": {
+    "output_chars": 22450,
+    "transcript_chars": 12475,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

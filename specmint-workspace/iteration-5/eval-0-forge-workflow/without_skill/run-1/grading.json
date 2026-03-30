@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "Research notes are saved to .specs/<id>/research-01.md",
+      "passed": true,
+      "evidence": "Transcript mentions saving research-01.md (file may be in .specs/ dir)"
+    },
+    {
+      "text": "At least one round of interactive questions is asked to the user (not rhetorical)",
+      "passed": true,
+      "evidence": "Found 12 question lines. Example: '**1. Which Vercel plan are you on?**'"
+    },
+    {
+      "text": "The agent pauses/stops after asking questions, waiting for user input before proceeding",
+      "passed": false,
+      "evidence": "No evidence that agent stopped to wait for user input"
+    },
+    {
+      "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+      "passed": true,
+      "evidence": "No SPEC.md found in outputs"
+    },
+    {
+      "text": "No application code (components, API routes, etc.) is written",
+      "passed": true,
+      "evidence": "No application code files found in outputs"
+    },
+    {
+      "text": "A .specs/ directory structure is initialized",
+      "passed": true,
+      "evidence": "Transcript shows .specs/ directory was initialized"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 1,
+    "total": 6,
+    "pass_rate": 0.8333
+  },
+  "execution_metrics": {
+    "output_chars": 7510,
+    "transcript_chars": 7510,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

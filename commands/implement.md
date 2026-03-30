@@ -46,7 +46,7 @@ For each task in scope, in order:
 
 ### Update Progress (sacred — never skip)
 
-Progress tracking is the most important bookkeeping in specsmith. If you
+Progress tracking is the most important bookkeeping in specmint-core. If you
 skip this, resume breaks, the registry lies, and the spec becomes useless.
 After completing each task, immediately update the spec files:
 

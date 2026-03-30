@@ -11,7 +11,7 @@
 ## Build, Test, and Development Commands
 - `rg --files`: fast inventory of repository files before editing.
 - `sed -n '1,160p' commands/forge.md`: inspect command content in terminal.
-- `npx skills add ngvoicu/specsmith -a codex`: smoke-test skill installation flow.
+- `npx skills add ngvoicu/specmint-core -g -a codex`: smoke-test skill installation flow.
 - `git log --oneline -n 10`: review recent commit style before committing.
 
 This repository has no compile/build pipeline; Markdown and JSON are consumed directly by host tools.

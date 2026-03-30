@@ -5,7 +5,7 @@ disable-model-invocation: true
 
 # Forge a Spec
 
-You are about to run the Spec Smith forge workflow. This bypasses plan mode
+You are about to run the Spec Mint Core forge workflow. This bypasses plan mode
 with something far more thorough: deep research → interview → more research
 → more interview → write spec → review.
 
@@ -33,8 +33,8 @@ Before starting research, resolve spec identity:
 Before starting, check if you're in plan mode (read-only).
 
 - If in plan mode:
-  - Do not run `/specsmith:forge` in plan mode
-  - Ask the user to exit plan mode (Shift+Tab), then rerun `/specsmith:forge`
+  - Do not run `/specmint-core:forge` in plan mode
+  - Ask the user to exit plan mode (Shift+Tab), then rerun `/specmint-core:forge`
   - Stop here until plan mode is exited
 - If NOT in plan mode:
   - Create/initialize `.specs/<spec-id>/` before the first write
@@ -69,7 +69,7 @@ architecture:
 Use Glob, Grep, and Read aggressively. Read actual file contents, not just
 file names. Open 10-20 files if needed.
 
-**Always spawn the `specsmith:researcher` agent** (Task tool) to run an
+**Always spawn the `specmint-core:researcher` agent** (Task tool) to run an
 exhaustive parallel research pass. The researcher reads 15-30 files, runs
 3+ web searches, compares library candidates, and assesses risks. Save
 structured findings to `.specs/<id>/research-01.md`. Don't skip this —
@@ -242,7 +242,7 @@ Before writing the spec, ensure the directory structure exists:
 3. If `.specs/` doesn't exist yet, also create `registry.md`
 
 If directory creation fails because the environment is still read-only, ask
-the user to exit plan mode (Shift+Tab) and rerun `/specsmith:forge`.
+the user to exit plan mode (Shift+Tab) and rerun `/specmint-core:forge`.
 
 ## Phase 5: Write the Spec
 
@@ -323,5 +323,5 @@ start?" Do not begin implementing until the user explicitly says to proceed.
 The spec review is a gate — the user may want to add tasks, reorder phases,
 change scope, or rename things. Respect this pause.
 
-After user approval, implementation is handled by `/specsmith:implement`.
-Do not implement application code inside `/specsmith:forge`.
+After user approval, implementation is handled by `/specmint-core:implement`.
+Do not implement application code inside `/specmint-core:forge`.

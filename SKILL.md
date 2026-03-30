@@ -1,5 +1,5 @@
 ---
-name: specsmith
+name: specmint-core
 description: >
   Persistent spec management for AI coding workflows. Use this skill when the
   user explicitly mentions specs, forging, or structured planning: says "forge",
@@ -12,7 +12,7 @@ description: >
   specs or forging — those are normal coding tasks, not spec management.
 ---
 
-# Spec Smith
+# Spec Mint Core
 
 Turn ephemeral plans into structured, persistent specs built through deep
 research and iterative interviews. Specs have phases, tasks, acceptance
@@ -44,8 +44,8 @@ and the user's preference for tracked vs local-only spec state.
 
 ## Claude Code Plugin
 
-If running as a Claude Code plugin, slash commands like `/specsmith:forge`,
-`/specsmith:resume`, `/specsmith:pause` etc. are available. See the
+If running as a Claude Code plugin, slash commands like `/specmint-core:forge`,
+`/specmint-core:resume`, `/specmint-core:pause` etc. are available. See the
 plugin's `commands/` directory for the full set. The `/forge` command
 replaces plan mode with deep research, iterative interviews, and spec
 writing.
@@ -243,7 +243,7 @@ full forge workflow: setup, research deeply, interview the user, iterate
 until clear, then write the spec.
 
 If the environment is in read-only plan mode, do not run forge in that mode.
-Ask the user to exit plan mode (Shift+Tab) and rerun `/specsmith:forge`.
+Ask the user to exit plan mode (Shift+Tab) and rerun `/specmint-core:forge`.
 
 **The forge workflow never produces application code.** Its outputs are only
 `.specs/` files: research notes, interview notes, and the SPEC.md. If the
@@ -283,7 +283,7 @@ Research runs on two parallel tracks to maximize thoroughness and speed:
 
 #### Track A: Spawn the Researcher Agent
 
-**Always spawn the `specsmith:researcher` agent** for codebase + internet
+**Always spawn the `specmint-core:researcher` agent** for codebase + internet
 research. Don't skip this — the researcher is purpose-built for exhaustive
 multi-source analysis and runs in parallel so it doesn't slow down the
 workflow.
@@ -657,7 +657,7 @@ read and write files can use these specs:
 - **Humans**: Readable and editable in any text editor
 - **Git**: Diffs cleanly, easy to track in version control
 
-To configure another tool, run `npx skills add ngvoicu/specsmith -a <tool>`.
+To configure another tool, run `npx skills add ngvoicu/specmint-core -g -a <tool>`.
 
 ## Behavioral Notes
 

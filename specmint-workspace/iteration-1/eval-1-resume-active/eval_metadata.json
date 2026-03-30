@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "resume-active-spec",
+  "prompt": "hey, what was I working on? I think I had something going with auth",
+  "assertions": [
+    "Correctly identified the active spec 'User Auth System' from the registry",
+    "Output includes task progress count (5/12 or similar)",
+    "Output mentions the current task AUTH-06 or Google OAuth callback handler",
+    "Output includes context from the Resume Context section (mentions token exchange, google.ts, or callback handler)",
+    "Summary follows a compact format (not a wall of text - structured with labels like Resuming/Progress/Phase/Current/Context)"
+  ]
+}

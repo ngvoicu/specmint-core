@@ -1,0 +1,13 @@
+{
+  "eval_id": 7,
+  "eval_name": "forge-acceptance-criteria",
+  "prompt": "forge a spec for adding a user profile page to our Next.js app. Users should be able to edit their display name, avatar, and bio. We're using Prisma with PostgreSQL, Tailwind CSS, and the app uses Next.js App Router with server actions.",
+  "assertions": [
+    "Interview questions include at least one about acceptance criteria or what 'done' looks like",
+    "Research notes are saved to .specs/<id>/research-01.md",
+    "The agent pauses/stops after asking questions, waiting for user input",
+    "No SPEC.md file is created yet (interview comes before spec writing)",
+    "No application code is written",
+    "A .specs/ directory structure is initialized"
+  ]
+}

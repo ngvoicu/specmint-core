@@ -1,0 +1,13 @@
+{
+  "eval_id": 8,
+  "eval_name": "implement-progress-tracking",
+  "prompt": "implement the spec",
+  "assertions": [
+    "Agent identified the active spec 'Quick Auth' from the registry",
+    "Agent found phase 1 tasks and started implementing from the current task",
+    "Agent attempted to implement or write code for at least one task",
+    "Task checkbox was updated in SPEC.md: changed from - [ ] to - [x] for at least one task",
+    "Registry (.specs/registry.md) was updated with new progress count after task completion",
+    "The current marker was moved to the next unchecked task"
+  ]
+}

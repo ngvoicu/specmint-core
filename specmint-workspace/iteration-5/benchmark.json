@@ -1,0 +1,644 @@
+{
+  "metadata": {
+    "skill_name": "specsmith",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-03-24T17:40:13Z",
+    "evals_run": [
+      0,
+      2,
+      6,
+      7,
+      8,
+      9
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 261.6,
+        "tokens": 47714,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Research notes are saved to .specs/<id>/research-01.md",
+          "passed": true,
+          "evidence": "Found research file 'research-01.md' with 14316 chars of content"
+        },
+        {
+          "text": "At least one round of interactive questions is asked to the user (not rhetorical)",
+          "passed": true,
+          "evidence": "Found 9 question lines. Example: '**1. Real-time transport: Managed service or SSE?**'"
+        },
+        {
+          "text": "The agent pauses/stops after asking questions, waiting for user input before proceeding",
+          "passed": true,
+          "evidence": "Agent indicated waiting for user response"
+        },
+        {
+          "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+          "passed": true,
+          "evidence": "No SPEC.md found in outputs"
+        },
+        {
+          "text": "No application code (components, API routes, etc.) is written",
+          "passed": true,
+          "evidence": "No application code files found in outputs"
+        },
+        {
+          "text": "A .specs/ directory structure is initialized",
+          "passed": true,
+          "evidence": "Transcript shows .specs/ directory was initialized"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 140.6,
+        "tokens": 38891,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The agent recognized 'write a spec' as a forge workflow trigger",
+          "passed": true,
+          "evidence": "Agent recognized request as forge workflow trigger"
+        },
+        {
+          "text": "Research was conducted (codebase scan, dependency check, or web research)",
+          "passed": true,
+          "evidence": "Research evidence: ['codebase', 'package.json', 'structure', 'read']"
+        },
+        {
+          "text": "Interview questions were asked to the user about architecture, scope, or technical decisions",
+          "passed": true,
+          "evidence": "Found 38 questions. Example: '| Approach | Complexity | PCI Scope | Subscription Support | Customization | Pic'"
+        },
+        {
+          "text": "The agent stopped and waited for user input after asking questions (did not self-answer)",
+          "passed": true,
+          "evidence": "Agent indicated waiting for user response"
+        },
+        {
+          "text": "No application code (Stripe integration, webhook handlers, etc.) was written",
+          "passed": true,
+          "evidence": "No application code files in outputs"
+        },
+        {
+          "text": "No premature implementation started after writing any spec files",
+          "passed": true,
+          "evidence": "No implementation activity found in transcript"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 6,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 316.3,
+        "tokens": 48606,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The researcher agent was spawned (mentions spawning, Task tool, or specsmith:researcher)",
+          "passed": true,
+          "evidence": "Researcher spawn evidence: ['spawn', 'specsmith:researcher', 'researcher agent', 'task tool']"
+        },
+        {
+          "text": "The researcher was given a specific output path for research notes",
+          "passed": true,
+          "evidence": "Research output path specified: ['research-01.md', '.specs/', 'output path', 'save to']"
+        },
+        {
+          "text": "Context7 or library documentation lookup was attempted in parallel",
+          "passed": true,
+          "evidence": "Context7/library docs evidence: ['context7', 'resolve-library', 'query-docs', 'library doc', 'parallel']"
+        },
+        {
+          "text": "Research notes contain library comparison tables",
+          "passed": true,
+          "evidence": "Library comparison evidence: ['comparison', 'compare', 'vs ', '| library']"
+        },
+        {
+          "text": "Research notes contain a risk assessment section",
+          "passed": true,
+          "evidence": "Risk assessment evidence: ['risk', 'breaking changes', 'security', 'performance', 'scalability', 'migration']"
+        },
+        {
+          "text": "Interview questions were asked and agent stopped to wait",
+          "passed": true,
+          "evidence": "Agent stopped and waited for user input"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 7,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 88.8,
+        "tokens": 30283,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Interview questions include at least one about acceptance criteria or what 'done' looks like",
+          "passed": true,
+          "evidence": "Acceptance criteria question found: ['acceptance criteria', 'conditions that must be true']"
+        },
+        {
+          "text": "Research notes are saved to .specs/<id>/research-01.md",
+          "passed": true,
+          "evidence": "Transcript mentions saving research-01.md (file may be in .specs/ dir)"
+        },
+        {
+          "text": "The agent pauses/stops after asking questions, waiting for user input",
+          "passed": true,
+          "evidence": "Agent indicated waiting for user response"
+        },
+        {
+          "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+          "passed": true,
+          "evidence": "No SPEC.md found in outputs"
+        },
+        {
+          "text": "No application code is written",
+          "passed": true,
+          "evidence": "No application code files found in outputs"
+        },
+        {
+          "text": "A .specs/ directory structure is initialized",
+          "passed": true,
+          "evidence": "Transcript shows .specs/ directory was initialized"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 8,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 231.7,
+        "tokens": 48182,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Agent identified the active spec 'Quick Auth' from the registry",
+          "passed": true,
+          "evidence": "Active spec identified: ['quick auth', 'quick-auth', 'registry', 'active spec', 'active']"
+        },
+        {
+          "text": "Agent found phase 1 tasks and started implementing from the current task",
+          "passed": true,
+          "evidence": "Phase 1 tasks found: ['qa-01', 'qa-02', 'qa-03', 'qa-04', 'phase 1', 'current task', '\u2190 current']"
+        },
+        {
+          "text": "Agent attempted to implement or write code for at least one task",
+          "passed": true,
+          "evidence": "Implementation activity: ['implementing', 'function', 'import', 'middleware', 'jwt', 'token']"
+        },
+        {
+          "text": "Task checkbox was updated in SPEC.md: changed from - [ ] to - [x] for at least one task",
+          "passed": true,
+          "evidence": "Checkbox update evidence: ['[x]', '- [x]', 'checked off', 'checkbox']"
+        },
+        {
+          "text": "Registry (.specs/registry.md) was updated with new progress count after task completion",
+          "passed": true,
+          "evidence": "Registry update evidence: ['registry.md', 'progress', '/4']"
+        },
+        {
+          "text": "The current marker was moved to the next unchecked task",
+          "passed": true,
+          "evidence": "Current marker movement: ['\u2190 current', 'current marker', 'moved current', 'next task']"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 9,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 259.7,
+        "tokens": 48600,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Agent identified the active spec from the registry",
+          "passed": true,
+          "evidence": "Active spec identified: ['quick auth', 'quick-auth', 'registry', 'active']"
+        },
+        {
+          "text": "Agent scoped implementation to phase 1 only",
+          "passed": true,
+          "evidence": "Phase 1 scoping evidence: ['phase 1', 'implement phase 1', 'phase 1 only']"
+        },
+        {
+          "text": "Task checkboxes were updated in SPEC.md for completed tasks",
+          "passed": true,
+          "evidence": "Checkbox update evidence: ['[x]', '- [x]']"
+        },
+        {
+          "text": "Phase marker was updated when all phase 1 tasks were done (in-progress to completed)",
+          "passed": true,
+          "evidence": "Phase marker update evidence: ['[completed]', '[in-progress]', 'phase.*completed', 'phase marker']"
+        },
+        {
+          "text": "Registry progress count was updated to reflect completed tasks",
+          "passed": true,
+          "evidence": "Registry update evidence: ['registry.md', 'progress']"
+        },
+        {
+          "text": "Registry and SPEC.md are consistent after implementation",
+          "passed": true,
+          "evidence": "Consistency verification evidence: ['re-read', 'verify', 'consistency', 'match', 'registry.*spec.md', 'spec.md.*registry']"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8333,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 102.7,
+        "tokens": 25658,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Research notes are saved to .specs/<id>/research-01.md",
+          "passed": true,
+          "evidence": "Transcript mentions saving research-01.md (file may be in .specs/ dir)"
+        },
+        {
+          "text": "At least one round of interactive questions is asked to the user (not rhetorical)",
+          "passed": true,
+          "evidence": "Found 12 question lines. Example: '**1. Which Vercel plan are you on?**'"
+        },
+        {
+          "text": "The agent pauses/stops after asking questions, waiting for user input before proceeding",
+          "passed": false,
+          "evidence": "No evidence that agent stopped to wait for user input"
+        },
+        {
+          "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+          "passed": true,
+          "evidence": "No SPEC.md found in outputs"
+        },
+        {
+          "text": "No application code (components, API routes, etc.) is written",
+          "passed": true,
+          "evidence": "No application code files found in outputs"
+        },
+        {
+          "text": "A .specs/ directory structure is initialized",
+          "passed": true,
+          "evidence": "Transcript shows .specs/ directory was initialized"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6667,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 80.5,
+        "tokens": 18977,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The agent recognized 'write a spec' as a forge workflow trigger",
+          "passed": false,
+          "evidence": "No evidence of forge workflow recognition"
+        },
+        {
+          "text": "Research was conducted (codebase scan, dependency check, or web research)",
+          "passed": true,
+          "evidence": "Research evidence: ['codebase', 'read']"
+        },
+        {
+          "text": "Interview questions were asked to the user about architecture, scope, or technical decisions",
+          "passed": true,
+          "evidence": "Found 15 questions. Example: '1. What is your tech stack? (e.g., Next.js + Prisma, Rails, Django, Express + Po'"
+        },
+        {
+          "text": "The agent stopped and waited for user input after asking questions (did not self-answer)",
+          "passed": false,
+          "evidence": "No evidence agent stopped to wait"
+        },
+        {
+          "text": "No application code (Stripe integration, webhook handlers, etc.) was written",
+          "passed": true,
+          "evidence": "No application code files in outputs"
+        },
+        {
+          "text": "No premature implementation started after writing any spec files",
+          "passed": true,
+          "evidence": "No implementation activity found in transcript"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 6,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.3333,
+        "passed": 2,
+        "failed": 4,
+        "total": 6,
+        "time_seconds": 143.7,
+        "tokens": 23780,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The researcher agent was spawned (mentions spawning, Task tool, or specsmith:researcher)",
+          "passed": false,
+          "evidence": "No evidence of researcher agent being spawned"
+        },
+        {
+          "text": "The researcher was given a specific output path for research notes",
+          "passed": false,
+          "evidence": "No research output path specified"
+        },
+        {
+          "text": "Context7 or library documentation lookup was attempted in parallel",
+          "passed": false,
+          "evidence": "No Context7 or library documentation evidence"
+        },
+        {
+          "text": "Research notes contain library comparison tables",
+          "passed": false,
+          "evidence": "No library comparison evidence"
+        },
+        {
+          "text": "Research notes contain a risk assessment section",
+          "passed": true,
+          "evidence": "Risk assessment evidence: ['risk', 'performance', 'migration']"
+        },
+        {
+          "text": "Interview questions were asked and agent stopped to wait",
+          "passed": true,
+          "evidence": "Found 46 questions (implies interview)"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 7,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6667,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 55.0,
+        "tokens": 14401,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Interview questions include at least one about acceptance criteria or what 'done' looks like",
+          "passed": true,
+          "evidence": "Acceptance criteria question found: ['acceptance criteria']"
+        },
+        {
+          "text": "Research notes are saved to .specs/<id>/research-01.md",
+          "passed": false,
+          "evidence": "No research-01.md file found in outputs and no mention in transcript"
+        },
+        {
+          "text": "The agent pauses/stops after asking questions, waiting for user input",
+          "passed": true,
+          "evidence": "Agent indicated waiting for user response"
+        },
+        {
+          "text": "No SPEC.md file is created yet (interview comes before spec writing)",
+          "passed": true,
+          "evidence": "No SPEC.md found in outputs"
+        },
+        {
+          "text": "No application code is written",
+          "passed": true,
+          "evidence": "No application code files found in outputs"
+        },
+        {
+          "text": "A .specs/ directory structure is initialized",
+          "passed": false,
+          "evidence": "No evidence of .specs/ directory initialization"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 8,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 190.4,
+        "tokens": 34124,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Agent identified the active spec 'Quick Auth' from the registry",
+          "passed": true,
+          "evidence": "Active spec identified: ['quick auth', 'quick-auth', 'registry', 'active']"
+        },
+        {
+          "text": "Agent found phase 1 tasks and started implementing from the current task",
+          "passed": true,
+          "evidence": "Phase 1 tasks found: ['qa-01', 'qa-02', 'qa-03', 'qa-04', 'phase 1', 'current task']"
+        },
+        {
+          "text": "Agent attempted to implement or write code for at least one task",
+          "passed": true,
+          "evidence": "Implementation activity: ['creating', 'function', 'export', 'import', 'const ', 'middleware', 'jwt', 'token']"
+        },
+        {
+          "text": "Task checkbox was updated in SPEC.md: changed from - [ ] to - [x] for at least one task",
+          "passed": true,
+          "evidence": "Checkbox update evidence: ['[x]', '- [x]', 'completed task']"
+        },
+        {
+          "text": "Registry (.specs/registry.md) was updated with new progress count after task completion",
+          "passed": true,
+          "evidence": "Registry update evidence: ['registry.md', 'progress']"
+        },
+        {
+          "text": "The current marker was moved to the next unchecked task",
+          "passed": true,
+          "evidence": "Current marker movement: ['<- current']"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 9,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 182.7,
+        "tokens": 34404,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Agent identified the active spec from the registry",
+          "passed": true,
+          "evidence": "Active spec identified: ['quick auth', 'quick-auth', 'registry', 'active']"
+        },
+        {
+          "text": "Agent scoped implementation to phase 1 only",
+          "passed": true,
+          "evidence": "Phase 1 scoping evidence: ['phase 1', 'implement phase 1']"
+        },
+        {
+          "text": "Task checkboxes were updated in SPEC.md for completed tasks",
+          "passed": true,
+          "evidence": "Checkbox update evidence: ['[x]', '- [x]', 'checkbox']"
+        },
+        {
+          "text": "Phase marker was updated when all phase 1 tasks were done (in-progress to completed)",
+          "passed": true,
+          "evidence": "Phase marker update evidence: ['[completed]', '[in-progress]', 'phase.*completed', 'phase status']"
+        },
+        {
+          "text": "Registry progress count was updated to reflect completed tasks",
+          "passed": true,
+          "evidence": "Registry update evidence: ['registry.md', 'progress']"
+        },
+        {
+          "text": "Registry and SPEC.md are consistent after implementation",
+          "passed": true,
+          "evidence": "Consistency verification evidence: ['verify', 'registry.*spec.md']"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 216.45,
+        "stddev": 85.0405,
+        "min": 88.8,
+        "max": 316.3
+      },
+      "tokens": {
+        "mean": 43712.6667,
+        "stddev": 7581.8304,
+        "min": 30283,
+        "max": 48606
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.75,
+        "stddev": 0.2528,
+        "min": 0.3333,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 125.8333,
+        "stddev": 55.3706,
+        "min": 55.0,
+        "max": 190.4
+      },
+      "tokens": {
+        "mean": 25224.0,
+        "stddev": 8023.942,
+        "min": 14401,
+        "max": 34404
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.25",
+      "time_seconds": "+90.6",
+      "tokens": "+18489"
+    }
+  },
+  "notes": []
+}

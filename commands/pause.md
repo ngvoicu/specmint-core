@@ -5,7 +5,7 @@ disable-model-invocation: true
 
 # Pause Spec
 
-Read the specsmith skill and follow the "Pausing a Spec" workflow.
+Read the specmint-core skill and follow the "Pausing a Spec" workflow.
 
 1. Read `.specs/registry.md` to find the spec with `active` status
 2. If no active spec exists, report that there is nothing to pause and stop

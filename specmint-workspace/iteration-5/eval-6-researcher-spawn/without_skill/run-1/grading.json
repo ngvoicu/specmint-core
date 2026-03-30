@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "The researcher agent was spawned (mentions spawning, Task tool, or specsmith:researcher)",
+      "passed": false,
+      "evidence": "No evidence of researcher agent being spawned"
+    },
+    {
+      "text": "The researcher was given a specific output path for research notes",
+      "passed": false,
+      "evidence": "No research output path specified"
+    },
+    {
+      "text": "Context7 or library documentation lookup was attempted in parallel",
+      "passed": false,
+      "evidence": "No Context7 or library documentation evidence"
+    },
+    {
+      "text": "Research notes contain library comparison tables",
+      "passed": false,
+      "evidence": "No library comparison evidence"
+    },
+    {
+      "text": "Research notes contain a risk assessment section",
+      "passed": true,
+      "evidence": "Risk assessment evidence: ['risk', 'performance', 'migration']"
+    },
+    {
+      "text": "Interview questions were asked and agent stopped to wait",
+      "passed": true,
+      "evidence": "Found 46 questions (implies interview)"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 4,
+    "total": 6,
+    "pass_rate": 0.3333
+  },
+  "execution_metrics": {
+    "output_chars": 22743,
+    "transcript_chars": 22743,
+    "total_tool_calls": 0,
+    "total_steps": 0,
+    "errors_encountered": 0
+  },
+  "timing": {},
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Automated grading via grade_eval.py"
+  }
+}

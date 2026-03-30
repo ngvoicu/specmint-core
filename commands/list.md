@@ -8,7 +8,7 @@ disable-model-invocation: true
 Show all specs grouped by status.
 
 1. If `.specs/registry.md` does not exist, report "No specs yet" and suggest
-   running `/specsmith:forge`.
+   running `/specmint-core:forge`.
 2. Read `.specs/registry.md`.
 3. For each spec row, read `.specs/<id>/SPEC.md` to compute accurate
    task counts (`[x]` and total), current phase, and current task marker.
@@ -29,4 +29,4 @@ Completed:
 ```
 
 If there are no rows after the table header, suggest running
-`/specsmith:forge` to create one.
+`/specmint-core:forge` to create one.
