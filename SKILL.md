@@ -442,6 +442,16 @@ to implement the feature without guessing. Include:
    isn't covered by a task?
 9. Verify acceptance criteria are specific, testable, and cover the key
    behaviors the user expects
+10. **Placeholder check**: Search the spec for "TBD", "TODO", "placeholder",
+    "TBC", "to be determined", "will be decided", "figure out" — replace
+    every instance with a concrete decision or remove the section
+11. **Internal consistency**: Verify task count in overview matches actual
+    tasks, all task code references are valid, library versions in different
+    sections don't conflict
+12. **Scope check**: Compare the spec against the interview answers — does
+    it deliver what was discussed? Nothing more, nothing less?
+13. **Ambiguity check**: For each task, ask "could an implementer complete
+    this without asking me a question?" If no, add detail until yes.
 
 Save to `.specs/<id>/SPEC.md`. Update `.specs/registry.md` — set
 status to `active`.
@@ -490,7 +500,12 @@ Parse the user's request to determine scope:
 5. After each task completion, update Resume Context with current state
 6. Log any new decisions to the Decision Log
 7. If implementation diverges from the spec, log it in the Deviations section
-8. If blocked on a task:
+8. **Phase review**: When all tasks in a phase are done, review before
+   moving on — re-read the phase's tasks and acceptance criteria, verify
+   each task's implementation matches what was specified, and check for
+   missing edge cases or spec drift. Fix issues before marking the phase
+   complete. Log findings in the Decision Log.
+9. If blocked on a task:
    - Keep the task unchecked and record blocker details in Resume Context
    - Set phase marker `[blocked]` only when the whole phase is blocked
    - Continue with another unblocked task only if sequencing allows it
@@ -503,9 +518,21 @@ When implementing, follow the testing strategy from the spec:
 - If a test task exists for the feature task you just completed, implement
   the test task immediately after
 
+### Verification Gate
+
+Before reporting any phase or spec as complete, provide evidence:
+- Run the relevant test suite via the project's test runner
+- Show the actual command and output — not a summary, not "tests pass"
+- If tests fail, fix the issues before claiming completion
+- Never use language like "should pass", "probably works", or "seems correct"
+
+Evidence first, then assertions. This applies at task, phase, and spec
+completion boundaries.
+
 ### Completion
 
 When all tasks are done:
+- **Run the full test suite** and show the output (verification gate)
 - Verify all Acceptance Criteria are checked off. If any remain unchecked,
   report which ones and ask the user before marking the spec complete.
 - Set all phases to `[completed]`
