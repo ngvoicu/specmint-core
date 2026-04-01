@@ -1,0 +1,13 @@
+{
+  "name": "specmint-core",
+  "displayName": "Spec Mint Core",
+  "description": "Structured spec management for AI coding workflows",
+  "version": "1.0.0",
+  "author": {
+    "name": "Gabriel Voicu"
+  },
+  "license": "MIT",
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "commands": "./commands/"
+}
