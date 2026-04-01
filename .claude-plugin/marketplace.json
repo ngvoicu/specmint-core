@@ -12,7 +12,7 @@
       "name": "specmint-core",
       "source": "./",
       "description": "Structured spec management for AI coding workflows. Replaces ephemeral plans with persistent, resumable specs built through deep research, iterative interviews, architecture diagrams, library comparisons, and comprehensive testing strategies.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Gabriel Voicu"
       },
