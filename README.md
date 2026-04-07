@@ -1,5 +1,9 @@
 # Spec Mint Core
 
+[![Benchmark +39%](https://img.shields.io/badge/benchmark-%2B39%25-brightgreen)](https://github.com/ngvoicu/specmint-core#evaluation-results)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-orange)](https://github.com/ngvoicu/specmint-core)
+
 **Plan mode, but actually good.**
 
 Spec Mint Core replaces ephemeral AI coding plans with persistent, resumable specs built through deep research and iterative interviews. Create a spec, work through it task by task, pause, switch to another spec, come back a week later and pick up exactly where you left off.
@@ -395,7 +399,7 @@ Behavioral guardrails in
 - **Decision Log**: Table with date, decision, rationale
 - **Deviations**: Table tracking where implementation diverged from spec
 
-## Tested with Skill Creator
+## Evaluation Results
 
 Spec Mint Core has been iteratively developed and evaluated using Anthropic's
 [Skill Creator](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/skill-creator/skills/skill-creator/SKILL.md)
@@ -439,7 +443,6 @@ Spec Mint Core is part of the Mint plugin family:
 |--------|---------|
 | **[specmint-core](https://github.com/ngvoicu/specmint-core)** | Persistent spec management — forge, implement, resume, pause |
 | **[specmint-tdd](https://github.com/ngvoicu/specmint-tdd)** | TDD-first fork with red-green-refactor enforcement |
-| **[schemint-pg](https://github.com/ngvoicu/schemint-pg)** | PostgreSQL schema design expertise — patterns, migrations, performance |
 
 ## License
 
