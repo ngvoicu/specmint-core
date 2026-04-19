@@ -435,6 +435,41 @@ Spec Mint Core's `/forge` command does what plan mode should do:
 - **Resumability**: Close the terminal, come back next week. The spec remembers exactly where you were.
 - **Multi-spec**: Juggle multiple features. Switch between them with one command.
 
+## Pair with Kluris
+
+Spec Mint Core reads your codebase. [Kluris](https://kluris.io) gives your agents the *other* half — the tribal knowledge that never made it into comments: architecture decisions, past incidents, vendor quirks, the "why" behind every weird choice.
+
+Pair them and `/forge` Phase 1b (research) stops guessing. It consults the brain first.
+
+**Inside your AI coding agent:**
+
+```text
+> /specmint-core:forge add OAuth sign-in with GitHub
+```
+
+Phase 1a reads the code. Phase 1b queries the brain:
+
+```text
+> /kluris-<brain> what do we know about auth and session handling?
+```
+
+The spec lands grounded in both the code *and* the knowledge your team already agreed to — no re-litigating decisions made six months ago.
+
+**Why it works:**
+
+- **Grounded research** — Phase 1b pulls from a curated brain instead of just the web.
+- **Institutional memory** — new hires (and agents) inherit context instantly.
+- **Spec reuse** — past specs and decisions surface automatically during research.
+
+**Install Kluris:**
+
+```bash
+pipx install kluris
+kluris wake-up
+```
+
+Full setup at [kluris.io](https://kluris.io).
+
 ## The Mint Plugin Family
 
 Spec Mint Core is part of the Mint plugin family:
