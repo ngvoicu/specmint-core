@@ -4,8 +4,6 @@
 
 Spec Mint Core is a markdown-only Claude Code plugin (no build step, no dependencies) that replaces ephemeral AI coding plans with persistent, resumable specs. It also ships as a universal skill (`SKILL.md`) that works with Codex, Cursor, Windsurf, Cline, and Gemini CLI via `npx skills add`.
 
-Version: 1.0.0 (`plugin.json`)
-
 ## Architecture
 
 The plugin has two conceptual layers:
@@ -22,7 +20,6 @@ These files must stay in sync — changing one without the other will cause beha
 |----------------|------------|
 | `references/spec-format.md` | Spec format rules in `SKILL.md` |
 | `commands/*.md` | Behavioral contracts in `references/command-contracts.md` |
-| `.claude-plugin/plugin.json` | Version references in `README.md` and `marketplace.json` |
 
 `skills/specmint-core/SKILL.md` is a symlink to `../../SKILL.md` — never replace it with a real file.
 
