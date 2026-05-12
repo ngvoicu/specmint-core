@@ -4,6 +4,15 @@
 
 Spec Mint Core is a markdown-only Claude Code plugin (no build step, no dependencies) that replaces ephemeral AI coding plans with persistent, resumable specs. It also ships as a universal skill (`SKILL.md`) that works with Codex, Cursor, Windsurf, Cline, and Gemini CLI via `npx skills add`.
 
+## Knowledge base
+
+Architectural details and distribution context for the Mint family live in the **ngvoicu-sme** brain. Read and write through kluris (never edit brain files by hand — the skill enforces an approval protocol):
+
+- `/kluris-ngvoicu-sme` — Claude Code skill (search, learn, remember, create)
+- `kluris search "<query>" --brain ngvoicu-sme` — direct search
+
+Topics relevant to this repo: specmint-core overview, architecture, core-vs-tdd differences, distribution, evals.
+
 ## Architecture
 
 The plugin has two conceptual layers:

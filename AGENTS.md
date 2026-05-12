@@ -1,5 +1,7 @@
 # Repository Guidelines
 
+For architectural context across the Mint family (core vs TDD, distribution, evals), read and write to the **ngvoicu-sme** brain through kluris — `/kluris-ngvoicu-sme` (Claude Code skill: search, learn, remember, create) or `kluris search "<query>" --brain ngvoicu-sme` (CLI). Never edit brain files by hand.
+
 ## Project Structure & Module Organization
 - `.claude-plugin/`: plugin metadata for Claude Code distribution (`plugin.json`, `marketplace.json`).
 - `commands/`: one Markdown file per slash command (`forge.md`, `resume.md`, `pause.md`, `switch.md`, `list.md`, `status.md`, `openapi.md`).
