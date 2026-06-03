@@ -303,13 +303,13 @@ Pair them and the forge workflow's Phase 1b (research) stops guessing. It consul
 **Inside your AI coding agent:**
 
 ```text
-> forge add OAuth sign-in with GitHub
-```
+> write a spec for OAuth sign-in with GitHub — check the brain, the codebase, and the web
 
-Phase 1a reads the code. Phase 1b queries the brain:
+research · phase 1a · reading codebase ........ done
+research · phase 1b · kluris wake-up ........... done
+research · phase 1c · synthesis ............... done
 
-```text
-> /kluris-<brain> what do we know about auth and session handling?
+> spec written to .specs/oauth-github.md — ready for interview.
 ```
 
 The spec lands grounded in both the code *and* the knowledge your team already agreed to — no re-litigating decisions made six months ago.
