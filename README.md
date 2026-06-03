@@ -2,6 +2,7 @@
 
 [![Benchmark +39%](https://img.shields.io/badge/benchmark-%2B39%25-brightgreen)](https://github.com/ngvoicu/specmint-core#evaluation-results)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Version](https://img.shields.io/badge/version-3.0.0-7c5cff)](https://github.com/ngvoicu/specmint-core)
 
 **Plan mode, but actually good.**
 
