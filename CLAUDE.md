@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Spec Mint Core is a markdown-only Claude Code plugin (no build step, no dependencies) that replaces ephemeral AI coding plans with persistent, resumable specs. It also ships as a universal skill (`SKILL.md`) that works with Codex, Cursor, Windsurf, Cline, and Gemini CLI via `npx skills add`.
+Spec Mint Core is a markdown-only universal skill (no build step, no dependencies) that replaces ephemeral AI coding plans with persistent, resumable specs. It ships as a universal skill (`SKILL.md`) that works with Claude Code, Codex, Cursor, Windsurf, Cline, and Gemini CLI via `npx skills add`.
 
 ## Knowledge base
 
@@ -15,9 +15,9 @@ Topics relevant to this repo: specmint-core overview, architecture, core-vs-tdd 
 
 ## Architecture
 
-The plugin has two conceptual layers:
+The skill has two conceptual layers:
 
-**Plugin layer** — `commands/*.md` (one file per slash command), `agents/researcher.md` (Opus-model deep research subagent), `.claude-plugin/` (metadata). Claude Code reads these markdown files as behavioral instructions.
+**Skill layer** — `SKILL.md` (the universal skill that drives the full workflow) and `references/researcher.md` (deep-research subagent brief, spawned via the Task tool during forge). AI tools read these markdown files as behavioral instructions.
 
 **Data layer** — `.specs/` directory created in the *consuming* project root (not this repo). All tools share this directory. SPEC.md frontmatter is authoritative; `registry.md` is a denormalized index for quick lookups. See `references/spec-format.md` for the full format specification.
 
@@ -28,7 +28,7 @@ These files must stay in sync — changing one without the other will cause beha
 | Source of truth | Must match |
 |----------------|------------|
 | `references/spec-format.md` | Spec format rules in `SKILL.md` |
-| `commands/*.md` | Behavioral contracts in `references/command-contracts.md` |
+| `SKILL.md` | Behavioral contracts in `references/command-contracts.md` |
 
 `skills/specmint-core/SKILL.md` is a symlink to `../../SKILL.md` — never replace it with a real file.
 
@@ -36,17 +36,16 @@ These files must stay in sync — changing one without the other will cause beha
 
 - `CLAUDE.md`, `AGENTS.md`, and `.specs/` are intentionally untracked in this repo
 - `AGENTS.md` provides Codex-specific guidelines (see `SKILL.md` for details)
-- `SKILL.md` must work for all AI tools — the Claude Code Plugin section at the top is tool-specific and kept to ~20 lines
+- `SKILL.md` must work for all AI tools — keep its behavior tool-agnostic
 - Spec format details (IDs, task codes, phase markers, sections) are in `references/spec-format.md` — that is the single source of truth
-- Workflow details (forge phases, implement lifecycle) are in the respective `commands/*.md` files
+- Workflow details (forge phases, implement lifecycle) live in `SKILL.md`
 
 ## Working on This Codebase
 
-- Edit `commands/*.md` to change slash command behavior
-- Edit `SKILL.md` to change universal skill behavior
+- Edit `SKILL.md` to change universal skill behavior (forge, implement, resume, etc.)
+- Edit `references/researcher.md` to change the deep-research subagent brief
 - Edit `references/spec-format.md` to change the SPEC.md format
-- Validate `.claude-plugin/*.json` stays valid JSON after edits
-- Smoke-test changes: `claude plugin add /path/to/specmint-core` in a disposable project, then run `/forge`, `/resume`, etc.
+- Smoke-test changes: install the skill into a disposable project (e.g. `npx skills add ./. -g -a claude-code`, or copy `SKILL.md` into the tool's skills directory), then exercise the natural-language triggers (forge / resume / implement)
 - Windsurf users must replace the symlink at `.windsurf/skills/specmint-core/SKILL.md` with a real file copy (Cascade doesn't follow symlinks)
 
 ## Eval Infrastructure

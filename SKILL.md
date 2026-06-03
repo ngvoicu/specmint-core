@@ -42,14 +42,6 @@ and the user's preference for tracked vs local-only spec state.
    both files. Never end a session with the registry out of sync with
    SPEC.md. This is non-negotiable — if you do nothing else, do this.
 
-## Claude Code Plugin
-
-If running as a Claude Code plugin, slash commands like `/specmint-core:forge`,
-`/specmint-core:resume`, `/specmint-core:pause` etc. are available. See the
-plugin's `commands/` directory for the full set. The `/forge` command
-replaces plan mode with deep research, iterative interviews, and spec
-writing.
-
 ## Session Start
 
 If active-spec context was injected by host tooling, use it directly
@@ -168,14 +160,6 @@ hooked up to the `/auth/refresh` endpoint yet."
 5. Set target status to `active` in frontmatter and in `.specs/registry.md`.
 6. Resume the target spec (full resume workflow).
 
-## Command Ownership Map
-
-- `SKILL.md`: global invariants, lifecycle rules, state authority, and conflict
-  handling, plus cross-tool OpenAPI behavior.
-- `commands/*.md`: command-specific entrypoints, prompts, and output shapes.
-- If there is a conflict, preserve `Critical Invariants` from this file and
-  apply command-specific behavior only where it does not violate invariants.
-
 ## Spec Format
 
 ### Frontmatter
@@ -243,7 +227,7 @@ full forge workflow: setup, research deeply, interview the user, iterate
 until clear, then write the spec.
 
 If the environment is in read-only plan mode, do not run forge in that mode.
-Ask the user to exit plan mode (Shift+Tab) and rerun `/specmint-core:forge`.
+Ask the user to exit plan mode (Shift+Tab) and start the forge workflow again.
 
 **The forge workflow never produces application code.** Its outputs are only
 `.specs/` files: research notes, interview notes, and the SPEC.md. If the
@@ -281,12 +265,12 @@ mid-build.
 
 Research runs on two parallel tracks to maximize thoroughness and speed:
 
-#### Track A: Spawn the Researcher Agent
+#### Track A: Spawn a Research Subagent
 
-**Always spawn the `specmint-core:researcher` agent** for codebase + internet
-research. Don't skip this — the researcher is purpose-built for exhaustive
-multi-source analysis and runs in parallel so it doesn't slow down the
-workflow.
+**Always spawn a research subagent** with the Task tool, using the brief in
+`references/researcher.md`, for codebase + internet research. Don't skip this —
+the research subagent is purpose-built for exhaustive multi-source analysis and
+runs in parallel so it doesn't slow down the workflow.
 
 Spawn it with the Task tool, providing:
 - The user's request (what they want to build/change)
@@ -294,7 +278,7 @@ Spawn it with the Task tool, providing:
 - Any Context7 findings you've already gathered (Track B)
 - Specific areas to focus on, if known
 
-The researcher will:
+The research subagent will:
 - Map the full project architecture (read manifests, lock files, directory tree)
 - Read 15-30 relevant code files and trace dependency chains
 - Run 3+ web searches for best practices and current patterns
@@ -304,8 +288,8 @@ The researcher will:
 
 #### Track B: Context7 & Cross-Skill Research (in parallel)
 
-While the researcher runs, do these yourself — they use MCP tools that
-the researcher agent doesn't have access to:
+While the research subagent runs, do these yourself — they use MCP tools that
+the research subagent doesn't have access to:
 
 - **Context7**: If available (resolve-library-id / query-docs tools), pull
   up-to-date documentation for every key library involved. Check API changes,
@@ -323,7 +307,7 @@ the researcher agent doesn't have access to:
 
 #### Merging Research
 
-When the researcher agent completes, read its output at
+When the research subagent completes, read its output at
 `.specs/<id>/research-01.md`. Merge your Context7 and cross-skill findings
 into the research notes — either append to the file or keep them in mind
 for the interview. The combined research should cover:
@@ -677,7 +661,7 @@ This is irreversible — consider archiving instead if you might need it later.
 The spec format is pure markdown with YAML frontmatter. Any tool that can
 read and write files can use these specs:
 
-- **Claude Code**: Full plugin support or skill via `npx skills add`
+- **Claude Code**: Skill via `npx skills add` (auto-triggers on natural language)
 - **Codex**: Snippet in AGENTS.md or skill via `npx skills add`
 - **Cursor / Windsurf / Cline**: Snippet in rules file
 - **Gemini CLI**: Snippet in GEMINI.md

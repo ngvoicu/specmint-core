@@ -2,13 +2,12 @@
 
 [![Benchmark +39%](https://img.shields.io/badge/benchmark-%2B39%25-brightgreen)](https://github.com/ngvoicu/specmint-core#evaluation-results)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Claude Code Plugin](https://img.shields.io/badge/Claude%20Code-plugin-orange)](https://github.com/ngvoicu/specmint-core)
 
 **Plan mode, but actually good.**
 
 Spec Mint Core replaces ephemeral AI coding plans with persistent, resumable specs built through deep research and iterative interviews. Create a spec, work through it task by task, pause, switch to another spec, come back a week later and pick up exactly where you left off.
 
-Works with Claude Code (as a plugin), Codex, Cursor, Windsurf, Cline, Gemini CLI, and any AI coding tool that can read files.
+Works with Claude Code, Codex, Cursor, Windsurf, Cline, Gemini CLI, and any AI coding tool that can read files — installed as a universal skill.
 
 ## The Problem
 
@@ -25,7 +24,7 @@ Spec Mint Core fixes all of this.
 
 ### The Forge Workflow
 
-Run `/specmint-core:forge "add user authentication with OAuth"` and Spec Mint Core takes over:
+Tell your AI tool to "forge a spec for user authentication with OAuth" and Spec Mint Core takes over:
 
 **1. Deep Research** — Exhaustive codebase scan (reads 10-20+ actual files, not just file names), web search for best practices, Context7 library docs, library comparisons, cross-skill research (frontend-design, datasmith-pg, etc.), UI inspection if applicable. Everything saved to `.specs/<id>/research-01.md`.
 
@@ -37,7 +36,7 @@ Run `/specmint-core:forge "add user authentication with OAuth"` and Spec Mint Co
 
 **5. Write Spec** — Synthesizes all research and interviews into a comprehensive SPEC.md with architecture diagrams (ASCII/Mermaid), library comparison tables, phases, tasks, testing strategy, a decision log, and resume context. Runs a coherence and logic review before presenting.
 
-**6. Implement** — Works through the spec task by task (via `/implement`), checking them off, updating progress, logging new decisions, writing tests as specified in the testing strategy.
+**6. Implement** — Works through the spec task by task during implementation, checking them off, updating progress, logging new decisions, writing tests as specified in the testing strategy.
 
 ### Specs Are Files
 
@@ -120,139 +119,41 @@ API. Uses the existing middleware pattern in src/middleware/.
 
 ## Installation
 
-Two ways to use Spec Mint Core, depending on your setup.
-
-### Path 1: Claude Code Plugin (Full — Recommended)
-
-Everything: all 8 slash commands (`/forge`, `/implement`, `/resume`, `/pause`, `/switch`, `/list`, `/status`, `/openapi`), researcher agent (Opus-powered deep codebase analysis), and SKILL.md auto-triggers.
+Spec Mint Core installs as a **universal skill** — one command, and it works in Claude Code, Codex, Cursor, Windsurf, Cline, Gemini CLI, and any AI coding tool that reads files.
 
 ```bash
-# In Claude Code, run:
-/plugin marketplace add ngvoicu/specmint-core
-/plugin install specmint-core
-```
+# Install globally (recommended)
+npx skills add ngvoicu/specmint-core -g
 
-### Path 2: Quick Setup via npx (Any Tool)
-
-Installs the SKILL.md into your tool's skill/instruction directory so it knows how to read, update, and resume specs from `.specs/`.
-
-```bash
-# Claude Code (skill only — auto-triggers, no slash commands)
+# Or target a specific tool with -a
 npx skills add ngvoicu/specmint-core -g -a claude-code
-
-# OpenAI Codex
 npx skills add ngvoicu/specmint-core -g -a codex
-
-# Cursor
 npx skills add ngvoicu/specmint-core -g -a cursor
-
-# Windsurf
 npx skills add ngvoicu/specmint-core -g -a windsurf
-
-# Cline
 npx skills add ngvoicu/specmint-core -g -a cline
-
-# Gemini CLI
 npx skills add ngvoicu/specmint-core -g -a gemini
 ```
 
-For Claude Code, this installs SKILL.md with auto-triggers ("resume", "what was I working on", "create a spec for X"). You **don't** get slash commands or the researcher agent — use Path 1 for the full plugin.
+Once installed, the skill auto-triggers on natural language — "forge a spec for X", "what was I working on?", "implement the spec". No slash commands and no marketplace: the skill bundles the full spec workflow, the deep-research subagent brief (`references/researcher.md`), and the spec format reference.
 
-For other tools, this installs the SKILL.md which teaches the tool the full spec workflow — resuming, pausing, creating specs, updating progress, and cross-session continuity.
-
-### Comparison: Plugin vs npx
-
-| Feature | Plugin (full) | npx (any tool) |
-|---------|:---:|:---:|
-| `/forge` research-interview workflow | Yes | No |
-| `/implement` with progress tracking | Yes | No |
-| `/resume`, `/pause`, `/switch` commands | Yes | No |
-| Researcher subagent (Opus, deep analysis) | Yes | No |
-| Auto-triggers (Claude Code only) | Yes | Yes |
-| Works with Codex, Cursor, Windsurf, etc. | No | Yes |
-| Multi-tool `.specs/` compatibility | Yes | Yes |
+> **Windsurf**: replace the symlink at `.windsurf/skills/specmint-core/SKILL.md` with a real file copy — Cascade doesn't follow symlinks.
 
 ## Usage
 
-### Claude Code Plugin Flow
+Talk to your AI tool in plain language — the skill recognizes the spec lifecycle and runs the right workflow:
 
-```
-# Start a new spec with deep research
-/specmint-core:forge "add OAuth authentication"
-→ Deep research (codebase + internet + Context7 + library comparison)
-→ Interview rounds (targeted questions, not generic)
-→ Writes SPEC.md with architecture diagrams, library choices, testing strategy
-→ Coherence and logic review before presenting
+| Goal | Say something like |
+|------|--------------------|
+| Start a new spec | "forge a spec for user authentication" |
+| Implement it | "implement the spec" · "implement phase 2" · "implement all phases" |
+| Resume where you left off | "what was I working on?" · "resume" |
+| Pause and save context | "pause the spec" |
+| Switch active spec | "switch to the api-refactor spec" |
+| List all specs | "list my specs" |
+| Show progress | "spec status" |
+| Generate API docs | "generate openapi" |
 
-# Implement the spec (or specific phases)
-/specmint-core:implement                    # Continue from current task
-/specmint-core:implement phase 2            # Implement all tasks in Phase 2
-/specmint-core:implement all phases         # Implement everything remaining
-
-# Generate OpenAPI spec from your codebase
-/specmint-core:openapi
-→ Scans routes, schemas, security config
-→ Writes .openapi/openapi.yaml + per-endpoint docs
-
-# Session ends — save context
-/specmint-core:pause
-→ Writes detailed resume context (file paths, function names, next step)
-
-# New session — pick up where you left off
-/specmint-core:resume
-→ Reads resume context, continues from exact spot
-
-# Juggling features
-/specmint-core:list                    # See all specs
-/specmint-core:switch auth-system      # Pauses current, activates auth-system
-/specmint-core:status                  # Detailed progress
-```
-
-### Any Tool Flow (Codex, Cursor, Windsurf, Cline, Gemini CLI)
-
-Once configured via `npx skills add`, every tool understands the same spec lifecycle. Here's the complete workflow:
-
-**Create a spec** — Ask the tool to plan or spec out work. It creates `.specs/<id>/SPEC.md` with phases, tasks, a decision log, and resume context.
-
-**Resume** — The tool reads `.specs/registry.md` to find the active spec, loads the SPEC.md, finds the `← current` task, reads the Resume Context section, and continues from exactly where you left off.
-
-**Pause** — The tool captures current state into the Resume Context section: which files were modified (specific paths, function names), what was completed, the exact next step. Updates checkboxes, sets status to `paused`.
-
-**Switch** — The tool pauses the current spec (full pause), loads the target spec, sets it to `active` in the registry, and resumes it.
-
-**List** — The tool reads `.specs/registry.md` and shows specs grouped by status (active, paused, completed).
-
-**Complete** — The tool verifies all tasks are checked, sets status to `completed` in both the SPEC.md frontmatter and the registry.
-
-#### Tool-specific invocation examples
-
-**Codex** (task-based prompts):
-```
-"create a spec for user authentication"
-"resume the auth spec"
-"pause and save context"
-"switch to the api-refactor spec"
-"show my specs"
-"mark the spec as done"
-```
-
-**Cursor / Windsurf / Cline** (chat-based):
-```
-"plan out a caching layer"
-"what was I working on?"
-"save my progress and pause"
-"switch to the auth spec"
-"list all specs"
-"complete the current spec"
-```
-
-**Gemini CLI**:
-```bash
-gemini "create a spec for rate limiting"
-gemini "resume"
-gemini "pause and save context"
-gemini "switch to auth-system"
-```
+Every action reads and writes plain files under `.specs/` — research notes, interviews, `SPEC.md`, and a `registry.md` index. Any tool that can read files shares the same `.specs/` directory, so you can forge in one tool and implement in another.
 
 ## The Forge Workflow (Detailed)
 
@@ -292,7 +193,7 @@ Synthesizes everything into a comprehensive SPEC.md:
 
 ### Phase 6: Implement
 
-Works through the spec task by task (via `/implement`):
+Works through the spec task by task during implementation:
 - Marks tasks `← current` as they start
 - Checks off `- [x]` when done
 - Updates phase status markers and registry
@@ -303,34 +204,25 @@ Works through the spec task by task (via `/implement`):
 
 ## Plan Mode
 
-Spec Mint Core **bypasses** Claude Code's built-in plan mode. The `/forge` command IS your planning phase — deep research, interviews, spec writing. You don't need plan mode at all.
+Spec Mint Core **replaces** Claude Code's built-in plan mode. The forge workflow IS your planning phase — deep research, interviews, spec writing. You don't need plan mode at all.
 
-If you happen to be in plan mode when you run `/specmint-core:forge`, Spec Mint Core
-asks you to exit plan mode first (Shift+Tab), then rerun `/specmint-core:forge`.
+If you happen to be in plan mode when you ask to forge a spec, Spec Mint Core
+asks you to exit plan mode first (Shift+Tab), then start the forge workflow again.
 
 ## Project Structure
 
 ```
 specmint-core/
-├── .claude-plugin/
-│   ├── plugin.json                 # Plugin metadata (v2.0.0)
-│   └── marketplace.json            # Marketplace registration
-├── commands/
-│   ├── forge.md                    # Research → interview → spec
-│   ├── implement.md                # Implement spec tasks, update progress
-│   ├── resume.md                   # Resume active spec
-│   ├── pause.md                    # Pause with context
-│   ├── switch.md                   # Switch between specs
-│   ├── list.md                     # List all specs
-│   ├── status.md                   # Detailed progress
-│   └── openapi.md                  # Generate OpenAPI spec from codebase
-├── agents/
-│   └── researcher.md               # Deep research subagent (Opus)
-├── references/
-│   ├── spec-format.md              # SPEC.md format specification
-│   └── command-contracts.md        # Behavioral contract checklist for commands/skill
 ├── SKILL.md                        # Universal skill (works with all tools)
-└── README.md
+├── skills/
+│   └── specmint-core/
+│       └── SKILL.md                # Symlink to ../../SKILL.md (skills-CLI discovery)
+├── references/
+│   ├── researcher.md               # Deep-research subagent brief
+│   ├── spec-format.md              # SPEC.md format specification
+│   └── command-contracts.md        # Behavioral contract checklist for the skill
+├── README.md
+└── LICENSE
 ```
 
 ## Spec Format
@@ -374,7 +266,7 @@ Spec Mint Core has been iteratively developed and evaluated using Anthropic's
 Each iteration was validated through parallel eval runs (with-skill vs
 without-skill baselines), automated assertion grading, and quantitative
 benchmarking across multiple test scenarios — forge workflow fidelity,
-interview gating, research depth, researcher agent spawning, spec quality,
+interview gating, research depth, research subagent spawning, spec quality,
 and implementation tracking.
 
 **Latest benchmark (iteration 5):**
@@ -393,7 +285,7 @@ and the iteration loop — see
 
 Plan mode is a good idea with a bad implementation. It restricts Claude to read-only tools and asks for a plan. That's it. No persistence, no research depth, no interviews, no progress tracking.
 
-Spec Mint Core's `/forge` command does what plan mode should do:
+Spec Mint Core's forge workflow does what plan mode should do:
 
 - **Research depth**: Reads 10-20+ files, searches the web, pulls library docs. Not a quick scan.
 - **Interviews**: Asks you targeted questions based on what it found. Multiple rounds until there's no ambiguity.
@@ -405,12 +297,12 @@ Spec Mint Core's `/forge` command does what plan mode should do:
 
 Spec Mint Core reads your codebase. [Kluris](https://kluris.io) gives your agents the *other* half — the tribal knowledge that never made it into comments: architecture decisions, past incidents, vendor quirks, the "why" behind every weird choice.
 
-Pair them and `/forge` Phase 1b (research) stops guessing. It consults the brain first.
+Pair them and the forge workflow's Phase 1b (research) stops guessing. It consults the brain first.
 
 **Inside your AI coding agent:**
 
 ```text
-> /specmint-core:forge add OAuth sign-in with GitHub
+> forge add OAuth sign-in with GitHub
 ```
 
 Phase 1a reads the code. Phase 1b queries the brain:

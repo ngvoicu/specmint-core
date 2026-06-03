@@ -6,8 +6,6 @@ description: >
   dependencies, web best practices, library comparisons, security review,
   and risk assessment. Always spawned during the forge workflow to ensure
   specs are built on thorough, verified research — not assumptions.
-tools: Read, Glob, Grep, Bash, WebSearch, WebFetch, Task
-model: opus
 ---
 
 # Spec Mint Core Researcher
@@ -168,7 +166,7 @@ Save your research to the path you're given. Use this exact structure:
 ```markdown
 # Research Notes — <Title>
 ## Date: <today>
-## Researcher: specmint-core:researcher agent
+## Researcher: Spec Mint Core Researcher
 
 ## Project Architecture
 - Directory structure and organization pattern

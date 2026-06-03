@@ -3,16 +3,16 @@
 For architectural context across the Mint family (core vs TDD, distribution, evals), read and write to the **ngvoicu-sme** brain through kluris — `/kluris-ngvoicu-sme` (Claude Code skill: search, learn, remember, create) or `kluris search "<query>" --brain ngvoicu-sme` (CLI). Never edit brain files by hand.
 
 ## Project Structure & Module Organization
-- `.claude-plugin/`: plugin metadata for Claude Code distribution (`plugin.json`, `marketplace.json`).
-- `commands/`: one Markdown file per slash command (`forge.md`, `resume.md`, `pause.md`, `switch.md`, `list.md`, `status.md`, `openapi.md`).
-- `agents/researcher.md`: subagent prompt used for deep codebase research.
+- `SKILL.md`: universal, cross-tool skill instructions (Claude Code, Codex, Cursor, Windsurf, Cline, Gemini CLI) — the full forge/implement/resume workflow.
+- `references/researcher.md`: deep-research subagent brief, spawned via the Task tool during forge.
 - `references/spec-format.md`: canonical `SPEC.md` format and markers.
-- `SKILL.md`: universal, cross-tool skill instructions (Codex, Cursor, Windsurf, Cline, Gemini CLI).
+- `references/command-contracts.md`: behavioral contract checklist for the skill.
+- `skills/specmint-core/SKILL.md`: symlink to `../../SKILL.md` for skills-CLI discovery (never replace with a real file).
 - `.specs/`: local dogfooding output for specs (gitignored in this repo).
 
 ## Build, Test, and Development Commands
 - `rg --files`: fast inventory of repository files before editing.
-- `sed -n '1,160p' commands/forge.md`: inspect command content in terminal.
+- `sed -n '1,160p' SKILL.md`: inspect skill content in terminal.
 - `npx skills add ngvoicu/specmint-core -g -a codex`: smoke-test skill installation flow.
 - `git log --oneline -n 10`: review recent commit style before committing.
 
@@ -20,16 +20,15 @@ This repository has no compile/build pipeline; Markdown and JSON are consumed di
 
 ## Coding Style & Naming Conventions
 - Keep content ASCII Markdown/JSON with concise, imperative instructions.
-- Use lowercase, hyphenated filenames for command docs (for example `commands/openapi.md`).
-- Keep command docs procedural (numbered steps, explicit file paths, deterministic behavior).
+- Use lowercase, hyphenated filenames for reference docs (for example `references/spec-format.md`).
+- Keep workflow docs procedural (numbered steps, explicit file paths, deterministic behavior).
 - Follow spec naming in examples: spec IDs are lowercase-hyphenated (`user-auth-system`), task codes are `[AUTH-01]`, and phase markers use `[pending]`, `[in-progress]`, `[completed]`, `[blocked]`.
 
 ## Testing Guidelines
 - No automated test suite currently exists in this repository.
 - Perform manual validation for each change:
-  - Verify `.claude-plugin/*.json` stays valid JSON.
   - Confirm referenced paths/files exist.
-  - Smoke-test install/use flow in a disposable project when command behavior changes.
+  - Smoke-test the install/use flow in a disposable project when skill behavior changes (e.g. `npx skills add ./. -g -a claude-code`, or copy `SKILL.md` into the tool's skills directory, then exercise forge / resume / implement).
 - If you change spec-format rules, update both `SKILL.md` and `references/spec-format.md` in the same PR.
 
 ## Commit & Pull Request Guidelines
