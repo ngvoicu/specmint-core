@@ -336,14 +336,11 @@ MIT
 ---
 
 <!-- ngvoicu author section — identical across all ngvoicu repos, keep in sync -->
-## Author
+## AI-native toolkit
 
-Built by [Gabriel Voicu](https://ngvoicu.dev) — AI-native consultant & software engineer.
+This project is part of a larger AI-native toolkit — and of a way of working your whole team can adopt: talks (["Becoming an AI Native Company"](https://ngvoicu.dev/becoming-an-ai-native-company/)), hands-on team training that teaches employees to use AI, and [AI adoption consulting for engineering teams](https://ngvoicu.dev/#consulting).
 
-I help companies become AI-native: talks ("Becoming an AI Native Company"), hands-on team training that teaches employees to use AI, and adoption engagements for engineering teams.
-
-- Site: [ngvoicu.dev](https://ngvoicu.dev) — consulting, talks, team training
+- Site: [ngvoicu.dev](https://ngvoicu.dev)
 - Contact: [office@ngvoicu.dev](mailto:office@ngvoicu.dev) · +40 734 704 910
-- [LinkedIn](https://www.linkedin.com/in/ngvoicu/) · [GitHub](https://github.com/ngvoicu)
 
-Part of the ngvoicu AI-native toolkit: [Specmint](https://specmint.ngvoicu.dev) (durable AI coding specs) · [Kluris](https://kluris.ngvoicu.dev) (team knowledge brains) · [ConsensFlow](https://consensflow.ngvoicu.dev) (cross-agent second opinions)
+Toolkit: [Specmint](https://specmint.ngvoicu.dev) (durable AI coding specs) · [Kluris](https://kluris.ngvoicu.dev) (team knowledge brains) · [ConsensFlow](https://consensflow.ngvoicu.dev) (cross-agent second opinions)
